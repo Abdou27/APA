@@ -47,4 +47,14 @@
     <string name="activities">Activités :</string>
     <string name="structures">Structures :</string>
     <string name="discipline">Discipline</string>
+    <string name="calendar">Calendrier</string>
+    <string name="session_of">Session de</string>
+    <string name="activity">Activité</string>
+    <string name="patients">Patients :</string>
+    <string name="patient_name">Nom du patient</string>
+    <string name="patient_age">Age du patient</string>
+    <string name="age">Age</string>
+    <string name="years">ans</string>
+    <string name="name">Nom</string>
+    <string name="Patients">Patients</string>
 </resources>

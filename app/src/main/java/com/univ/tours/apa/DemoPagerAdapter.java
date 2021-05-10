@@ -34,6 +34,8 @@ public class DemoPagerAdapter extends FragmentPagerAdapter {
                 return AddCourseFragment.newInstance(fm);
             case 2:
                 return CalendarFragment.newInstance(fm);
+            case 3:
+                return ChoosePatientFragment.newInstance(fm);
         }
         return null;
     }
@@ -49,6 +51,8 @@ public class DemoPagerAdapter extends FragmentPagerAdapter {
                 return mContext.getString(R.string.add_course).toUpperCase(l);
             case 2:
                 return mContext.getString(R.string.calendar).toUpperCase(l);
+            case 3:
+                return mContext.getString(R.string.Patients).toUpperCase(l);
 
         }
         return null;
@@ -57,6 +61,6 @@ public class DemoPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 1 total pages.
-        return 3;
+        return 4;
     }
 }

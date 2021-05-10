@@ -50,4 +50,11 @@
     <string name="calendar">Calendar</string>
     <string name="session_of">Session of</string>
     <string name="activity">Activity</string>
+    <string name="patients">Patients :</string>
+    <string name="patient_name">Patient name</string>
+    <string name="patient_age">Patient age</string>
+    <string name="age">Age</string>
+    <string name="years">years</string>
+    <string name="name">Name</string>
+    <string name="Patients">Patients</string>
 </resources>
