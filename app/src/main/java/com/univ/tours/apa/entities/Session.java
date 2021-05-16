@@ -1,21 +1,28 @@
 package com.univ.tours.apa.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.time.LocalDateTime;
 
+@Entity
 public class Session {
-    private static Long uid = 1L;
-
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+    @NonNull
     private LocalDateTime dateTime;
+    @NonNull
     private Integer duration;
     private Integer completionRate;
     private String patientFeedback;
-    private Collaborator collaborator;
-    private Patient patient;
+    @NonNull
+    private Structure structure;
+    @NonNull
+    private Activity activity;
 
     public Session() {
-        setId(uid);
-        uid++;
+        //
     }
 
     public Long getId() {
@@ -26,19 +33,21 @@ public class Session {
         this.id = id;
     }
 
+    @NonNull
     public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDateTime dateTime) {
+    public void setDateTime(@NonNull LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
+    @NonNull
     public Integer getDuration() {
         return duration;
     }
 
-    public void setDuration(Integer duration) {
+    public void setDuration(@NonNull Integer duration) {
         this.duration = duration;
     }
 
@@ -56,5 +65,23 @@ public class Session {
 
     public void setPatientFeedback(String patientFeedback) {
         this.patientFeedback = patientFeedback;
+    }
+
+    @NonNull
+    public Structure getStructure() {
+        return structure;
+    }
+
+    public void setStructure(@NonNull Structure structure) {
+        this.structure = structure;
+    }
+
+    @NonNull
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(@NonNull Activity activity) {
+        this.activity = activity;
     }
 }

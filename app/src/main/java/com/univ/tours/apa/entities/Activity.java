@@ -1,16 +1,21 @@
 package com.univ.tours.apa.entities;
 
-public class Activity {
-    private static Long uid = 1L;
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity
+public class Activity {
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+    @NonNull
     private String title;
     private String description;
-    private Structure structure;
+    private User collaborator;
+    private Course course;
 
     public Activity() {
-        setId(uid);
-        uid++;
+        //
     }
 
     public Long getId() {
@@ -21,11 +26,12 @@ public class Activity {
         this.id = id;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
@@ -37,11 +43,19 @@ public class Activity {
         this.description = description;
     }
 
-    public Structure getStructure() {
-        return structure;
+    public User getCollaborator() {
+        return collaborator;
     }
 
-    public void setStructure(Structure structure) {
-        this.structure = structure;
+    public void setCollaborator(User collaborator) {
+        this.collaborator = collaborator;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 }

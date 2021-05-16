@@ -4,13 +4,20 @@
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.APA">
-        <activity android:name=".AddCourseActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity android:name=".activities.CollaboratorActivity" />
+        <activity android:name=".activities.DoctorActivity" />
+        <activity android:name=".activities.BaseToolbarActivity" />
+        <activity android:name=".activities.PatientActivity" />
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

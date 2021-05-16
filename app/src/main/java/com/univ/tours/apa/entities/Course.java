@@ -1,20 +1,29 @@
 package com.univ.tours.apa.entities;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import java.util.List;
 
+@Entity
 public class Course {
-    private static Long uid = 1L;
 
+    @PrimaryKey(autoGenerate = true)
     private Long id;
+    @NonNull
     private String title;
+    @NonNull
     private String description;
+    @NonNull
     private String category;
-    private Doctor doctor;
-    private List<Activity> activities;
+    @NonNull
+    private User doctor;
+    @NonNull
+    private User patient;
 
     public Course() {
-        setId(uid);
-        uid++;
+        //
     }
 
     public Long getId() {
@@ -25,51 +34,48 @@ public class Course {
         this.id = id;
     }
 
+    @NonNull
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
+    public void setTitle(@NonNull String title) {
         this.title = title;
     }
 
+    @NonNull
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(@NonNull String description) {
         this.description = description;
     }
 
+    @NonNull
     public String getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(@NonNull String category) {
         this.category = category;
     }
 
-    public Doctor getDoctor() {
+    @NonNull
+    public User getDoctor() {
         return doctor;
     }
 
-    public void setDoctor(Doctor doctor) {
+    public void setDoctor(@NonNull User doctor) {
         this.doctor = doctor;
     }
 
-    public List<Activity> getActivities() {
-        return activities;
+    @NonNull
+    public User getPatient() {
+        return patient;
     }
 
-    public void addActivity(Activity activity) {
-        this.activities.add(activity);
-    }
-
-    public void removeActivity(Activity activity) {
-        this.activities.remove(activity);
-    }
-
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
+    public void setPatient(@NonNull User patient) {
+        this.patient = patient;
     }
 }
