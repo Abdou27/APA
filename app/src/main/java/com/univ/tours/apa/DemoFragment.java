@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.univ.tours.apa.fragments.DoctorAddActivityFragment;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DemoFragment#newInstance} factory method to
@@ -73,8 +75,8 @@ public class DemoFragment extends Fragment {
 
         addActivityButton = view.findViewById(R.id.addActivityButton);
         addActivityButton.setOnClickListener(v -> {
-            AddActivityFragment addActivityFragment = AddActivityFragment.newInstance(fm);
-            addActivityFragment.show(fm, "addActivityFragment");
+//            DoctorAddActivityFragment doctorAddActivityFragment = DoctorAddActivityFragment.newInstance(this, course, fm);
+//            doctorAddActivityFragment.show(fm, "addActivityFragment");
         });
 
         return view;

@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.univ.tours.apa.adapters.StructurePickerStructuresRecyclerViewAdapter;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -24,7 +26,7 @@ public class ChooseStructureFragment extends DialogFragment {
     FragmentManager fm;
 
     public RecyclerView mRecyclerView;
-    private StructuresRecyclerViewAdapter mAdapter;
+    private StructurePickerStructuresRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public ChooseStructureFragment() {
@@ -54,12 +56,12 @@ public class ChooseStructureFragment extends DialogFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_choose_structure, container, false);
 
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(false);
-        mLayoutManager = new LinearLayoutManager(getContext());
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new StructuresRecyclerViewAdapter(getContext(), getDummyData(), this);
-        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+//        mRecyclerView.setHasFixedSize(false);
+//        mLayoutManager = new LinearLayoutManager(getContext());
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        mAdapter = new StructurePickerStructuresRecyclerViewAdapter(getContext(), getDummyData(), this);
+//        mRecyclerView.setAdapter(mAdapter);
 
         return view;
     }

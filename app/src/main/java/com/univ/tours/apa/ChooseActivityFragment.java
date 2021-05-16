@@ -12,10 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.card.MaterialCardView;
+import com.univ.tours.apa.adapters.DoctorActivitiesRecyclerViewAdapter;
+import com.univ.tours.apa.entities.Activity;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +28,7 @@ public class ChooseActivityFragment extends DialogFragment {
     FragmentManager fm;
 
     public RecyclerView mRecyclerView;
-    private ActivitiesRecyclerViewAdapter mAdapter;
+    private DoctorActivitiesRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     public ChooseActivityFragment() {
@@ -60,7 +62,9 @@ public class ChooseActivityFragment extends DialogFragment {
         mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mAdapter = new ActivitiesRecyclerViewAdapter(getContext(), getDummyData());
+
+        List<Activity> activities = new ArrayList<>();
+        mAdapter = new DoctorActivitiesRecyclerViewAdapter(getContext(), activities);
         mRecyclerView.setAdapter(mAdapter);
 
         return view;
