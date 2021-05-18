@@ -52,6 +52,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/textView"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constrainedHeight="true"
             app:columnGap="8dp"
             app:dayBackgroundColor="#05000000"
             app:eventTextColor="@android:color/white"
