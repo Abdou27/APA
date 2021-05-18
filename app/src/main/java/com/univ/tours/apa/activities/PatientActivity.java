@@ -61,24 +61,32 @@ public class PatientActivity extends BaseToolbarActivity {
         MonthLoader.MonthChangeListener mMonthChangeListener = (newYear, newMonth) -> {
             // Populate the week view with some events.
             List<WeekViewEvent> events = new ArrayList<>();
-            Log.d("TAG", "userSessions: " + userSessions.size());
+//            Log.d("TAG", "userSessions: " + userSessions.size());
             if (userSessions != null) {
                 for (Session session : userSessions) {
                     LocalDateTime dateTime = session.getDateTime();
                     int sessionYear = dateTime.getYear();
                     int sessionMonth = dateTime.getMonthValue();
-                    Log.d("TAG", "newMonth: " + newMonth);
+//                    Log.d("TAG", "sessionNumber: " + userSessions.indexOf(session));
+//                    Log.d("TAG", "sessionYear: " + sessionYear);
+//                    Log.d("TAG", "sessionMonth: " + sessionMonth);
+//                    Log.d("TAG", "newYear: " + newYear);
+//                    Log.d("TAG", "newMonth: " + newMonth);
                     if (sessionYear == newYear && sessionMonth == (newMonth)) {
                         Integer duration = session.getDuration();
+                        Log.d("TAG", "session.getDateTime: " + session.getDateTime());
                         Calendar startTime = Calendar.getInstance();
-                        startTime.set(Calendar.HOUR_OF_DAY, dateTime.getHour());
+                        startTime.set(Calendar.SECOND, dateTime.getSecond());
                         startTime.set(Calendar.MINUTE, dateTime.getMinute());
-                        startTime.set(Calendar.MONTH, sessionMonth);
+                        startTime.set(Calendar.HOUR_OF_DAY, dateTime.getHour());
+                        startTime.set(Calendar.DAY_OF_MONTH, dateTime.getDayOfMonth());
+                        startTime.set(Calendar.MONTH, sessionMonth - 1);
                         startTime.set(Calendar.YEAR, sessionYear);
                         Calendar endTime = (Calendar) startTime.clone();
                         endTime.add(Calendar.MINUTE, duration);
                         WeekViewEvent event = new WeekViewEvent(1, session.getActivity().getTitle(), startTime, endTime);
                         event.setColor(getResources().getColor(R.color.design_default_color_primary));
+                        Log.d("TAG", "event: " + event.getName() + " " + event.getStartTime().getTime().toString());
                         events.add(event);
                     }
                 }
