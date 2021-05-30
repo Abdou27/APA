@@ -1,5 +1,6 @@
 package com.univ.tours.apa.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -30,7 +31,6 @@ public class CollaboratorAddStructureFragment extends DialogFragment {
 
     EditText structureNameEditText, structureDisciplineEditText, structurePathologiesEditText;
     Button addStructureButton;
-    ProgressBar loadingProgressBar;
 
     public CollaboratorAddStructureFragment() {
         // Required empty public constructor
@@ -67,7 +67,6 @@ public class CollaboratorAddStructureFragment extends DialogFragment {
         structureDisciplineEditText = view.findViewById(R.id.structureDisciplineEditText);
         structurePathologiesEditText = view.findViewById(R.id.structurePathologiesEditText);
         addStructureButton = view.findViewById(R.id.addStructureButton);
-        loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -92,7 +91,7 @@ public class CollaboratorAddStructureFragment extends DialogFragment {
         structurePathologiesEditText.addTextChangedListener(textWatcher);
 
         addStructureButton.setOnClickListener(v -> {
-            loadingProgressBar.setVisibility(View.VISIBLE);
+            ProgressDialog loadingDialog = ProgressDialog.show(getContext(), "", getContext().getString(R.string.loading_progress_bar_text), true);
             new Thread((Runnable) () -> {
                 Structure structure = new Structure();
                 structure.setName(structureNameEditText.getText().toString().trim());
@@ -102,6 +101,7 @@ public class CollaboratorAddStructureFragment extends DialogFragment {
                 structure = MainActivity.db.structureDao().findById(id);
                 parent.retainedStructures.add(structure);
                 parent.mRecyclerView.post(() -> parent.mAdapter.notifyDataSetChanged());
+                loadingDialog.dismiss();
             }).start();
             dismiss();
         });

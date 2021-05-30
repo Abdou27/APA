@@ -1,5 +1,6 @@
 package com.univ.tours.apa.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,12 +14,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Looper;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.univ.tours.apa.activities.MainActivity;
@@ -42,6 +45,7 @@ public class DoctorAssignCourseFragment extends DialogFragment {
     FragmentManager fm;
     Course course;
     android.app.Activity context;
+    DoctorReadPatientFragment parent;
 
     public RecyclerView mRecyclerView;
     public DoctorActivitiesRecyclerViewAdapter mAdapter;
@@ -49,9 +53,10 @@ public class DoctorAssignCourseFragment extends DialogFragment {
 
     List<Activity> activities = new ArrayList<>();
 
+    TextView noActivitiesTextView;
     EditText titleEditText, descriptionEditText, categoryEditText;
     Button addActivityButton, addCourseButton;
-    ProgressBar loadingProgressBar;
+    ProgressDialog loadingDialog;
 
     public DoctorAssignCourseFragment() {
         // Required empty public constructor
@@ -63,11 +68,12 @@ public class DoctorAssignCourseFragment extends DialogFragment {
      *
      * @return A new instance of fragment AddCourseFragment.
      */
-    public static DoctorAssignCourseFragment newInstance(User patient, FragmentManager fm, android.app.Activity context) {
+    public static DoctorAssignCourseFragment newInstance(User patient, FragmentManager fm, android.app.Activity context, DoctorReadPatientFragment parent) {
         DoctorAssignCourseFragment fragment = new DoctorAssignCourseFragment();
         fragment.patient = patient;
         fragment.fm = fm;
         fragment.context = context;
+        fragment.parent = parent;
         return fragment;
     }
 
@@ -90,12 +96,12 @@ public class DoctorAssignCourseFragment extends DialogFragment {
         mAdapter = new DoctorActivitiesRecyclerViewAdapter(getContext(), activities);
         mRecyclerView.setAdapter(mAdapter);
 
+        noActivitiesTextView = view.findViewById(R.id.noActivitiesTextView);
         titleEditText = view.findViewById(R.id.titleEditText);
         descriptionEditText = view.findViewById(R.id.descriptionEditText);
         categoryEditText = view.findViewById(R.id.categoryEditText);
         addActivityButton = view.findViewById(R.id.addActivityButton);
         addCourseButton = view.findViewById(R.id.addCourseButton);
-        loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
 
         addActivityButton.setOnClickListener(v -> {
             DoctorAddActivityFragment doctorAddActivityFragment = DoctorAddActivityFragment.newInstance(this, course, fm);
@@ -103,37 +109,51 @@ public class DoctorAssignCourseFragment extends DialogFragment {
         });
 
         addCourseButton.setOnClickListener(v -> {
-            if (titleEditText.getText().toString().isEmpty()
-                    || descriptionEditText.getText().toString().isEmpty()
-                    || categoryEditText.getText().toString().isEmpty()
-                    || activities.size() == 0) {
-                Toast.makeText(getContext(), getString(R.string.incomplete_data), Toast.LENGTH_LONG).show();
-            } else {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                new Thread((Runnable) () -> {
-                    course.setTitle(titleEditText.getText().toString().trim());
-                    course.setDescription(descriptionEditText.getText().toString().trim());
-                    course.setCategory(categoryEditText.getText().toString().trim());
-                    course.setPatient(patient);
-                    SharedPreferences settings;
-                    settings = this.getActivity().getSharedPreferences(APA, Context.MODE_PRIVATE);
-                    Long user_id = settings.getLong("user_id", 0);
-                    User doctor = MainActivity.db.userDao().findById(user_id);
-                    course.setDoctor(doctor);
-                    Long id = MainActivity.db.courseDao().insert(course);
-                    course.setId(id);
-                    for (Activity activity : activities) {
-                        activity.setCourse(course);
-                        MainActivity.db.activityDao().insert(activity);
-                    }
-                    Looper.prepare();
-                    Toast.makeText(getActivity(), getString(R.string.success), Toast.LENGTH_LONG).show();
-                    Looper.loop();
-                }).start();
-                dismiss();
-            }
+            checkInputAndAddCourse();
         });
 
+        refreshEmptyTextView();
+
         return view;
+    }
+
+    private void checkInputAndAddCourse() {
+        if (titleEditText.getText().toString().trim().isEmpty()
+                || descriptionEditText.getText().toString().trim().isEmpty()
+                || categoryEditText.getText().toString().trim().isEmpty()
+                || activities.size() == 0) {
+            Toast.makeText(getContext(), getString(R.string.incomplete_data), Toast.LENGTH_LONG).show();
+        } else {
+            loadingDialog = ProgressDialog.show(getContext(), "Loading", getContext().getString(R.string.loading_progress_bar_text), true);
+            course.setTitle(titleEditText.getText().toString().trim());
+            course.setDescription(descriptionEditText.getText().toString().trim());
+            course.setCategory(categoryEditText.getText().toString().trim());
+            course.setPatient(patient);
+            SharedPreferences settings;
+            settings = this.getActivity().getSharedPreferences(APA, Context.MODE_PRIVATE);
+            Long user_id = settings.getLong("user_id", 0);
+            new Thread((Runnable) () -> {
+                User doctor = MainActivity.db.userDao().findById(user_id);
+                course.setDoctor(doctor);
+                Long id = MainActivity.db.courseDao().insert(course);
+                course.setId(id);
+                for (Activity activity : activities) {
+                    activity.setCourse(course);
+                    MainActivity.db.activityDao().insert(activity);
+                }
+                parent.courses.add(course);
+                parent.mRecyclerView.post(() -> parent.mAdapter.notifyDataSetChanged());
+                getActivity().runOnUiThread(() -> loadingDialog.dismiss());
+            }).start();
+            dismiss();
+        }
+    }
+
+    public void refreshEmptyTextView() {
+        if (activities.isEmpty()) {
+            noActivitiesTextView.setVisibility(View.VISIBLE);
+        } else {
+            noActivitiesTextView.setVisibility(View.GONE);
+        }
     }
 }

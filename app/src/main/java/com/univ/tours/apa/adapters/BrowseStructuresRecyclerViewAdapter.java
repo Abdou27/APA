@@ -3,32 +3,36 @@ package com.univ.tours.apa.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.fragments.StructurePickerFragment;
+import com.univ.tours.apa.fragments.BrowseStructuresFragment;
+import com.univ.tours.apa.fragments.CollaboratorReadCourseFragment;
+import com.univ.tours.apa.fragments.EditStructureFragment;
 
 import java.util.List;
 
-public class CollaboratorStructuresRecyclerViewAdapter extends RecyclerView.Adapter<CollaboratorStructuresRecyclerViewAdapter.DataContainer> {
-    List<Structure> structures;
+public class BrowseStructuresRecyclerViewAdapter extends RecyclerView.Adapter<BrowseStructuresRecyclerViewAdapter.DataContainer> {
+    public List<Structure> structures;
     FragmentManager fm;
+    BrowseStructuresFragment fragment;
 
-    public CollaboratorStructuresRecyclerViewAdapter(FragmentManager fm, List<Structure> structures) {
+    public BrowseStructuresRecyclerViewAdapter(FragmentManager fm, List<Structure> structures, BrowseStructuresFragment fragment) {
         this.structures = structures;
+        this.fragment = fragment;
         this.fm = fm;
     }
 
     @NonNull
     @Override
-    public CollaboratorStructuresRecyclerViewAdapter.DataContainer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public BrowseStructuresRecyclerViewAdapter.DataContainer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.recyclerview_structure, parent, false);
         return new DataContainer(view);
@@ -39,9 +43,8 @@ public class CollaboratorStructuresRecyclerViewAdapter extends RecyclerView.Adap
         holder.nameTextView.setText(structures.get(position).getName());
         holder.disciplineTextView.setText(structures.get(position).getDiscipline());
         holder.materialCardView.setOnClickListener(v -> {
-            // Allow the ability to edit structures later
-//            parent.setText(structures.get(position).getName());
-//            fragment.dismiss();
+            EditStructureFragment editStructureFragment = EditStructureFragment.newInstance(structures.get(position), fragment);
+            editStructureFragment.show(fm, "editStructureFragment");
         });
     }
 

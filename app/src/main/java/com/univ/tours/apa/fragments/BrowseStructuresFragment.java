@@ -15,12 +15,9 @@ import android.widget.SearchView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.activities.MainActivity;
-import com.univ.tours.apa.adapters.CollaboratorStructuresRecyclerViewAdapter;
-import com.univ.tours.apa.entities.Activity;
+import com.univ.tours.apa.adapters.BrowseStructuresRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Structure;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.univ.tours.apa.activities.MainActivity.db;
@@ -35,7 +32,7 @@ public class CollaboratorBrowseStructuresFragment extends Fragment {
     List<Structure> retainedStructures;
 
     public RecyclerView mRecyclerView;
-    public CollaboratorStructuresRecyclerViewAdapter mAdapter;
+    public BrowseStructuresRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
     String searchQuery = "";
@@ -95,14 +92,14 @@ public class CollaboratorBrowseStructuresFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         new Thread((Runnable) () -> {
             retainedStructures = db.structureDao().getAll();
-            mAdapter = new CollaboratorStructuresRecyclerViewAdapter(fm, retainedStructures);
+            mAdapter = new BrowseStructuresRecyclerViewAdapter(fm, retainedStructures);
             mRecyclerView.setAdapter(mAdapter);
         }).start();
 
         floatingActionButton = view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(v -> {
-            CollaboratorAddStructureFragment collaboratorAddStructureFragment = CollaboratorAddStructureFragment.newInstance(this, fm);
-            collaboratorAddStructureFragment.show(fm, "collaboratorAddStructureFragment");
+            AddStructureFragment addStructureFragment = AddStructureFragment.newInstance(this, fm);
+            addStructureFragment.show(fm, "collaboratorAddStructureFragment");
         });
 
         return view;
