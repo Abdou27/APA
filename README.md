@@ -1,6 +1,6 @@
 # APA
 
-Membres du groupe :
+**Membres du groupe :**
 - Abderrahim BENMELOUKA
 - Gabriel DAGORNE
 - Hakim BEGHAMI
@@ -9,7 +9,7 @@ Membres du groupe :
 
 Pour la première execution, s'il n'existe pas d'utilisateurs, une méthode helper va remplir la BDD avec des données arbitraires pour pouvoir comprendre le flux de l'application plus facilement.
 
-Utilisateurs dans le démo :
+**Utilisateurs dans le démo :**
 - Docteurs :
   - amabella.quinn@gmail.com
   - ranger.laberge@gmail.com
@@ -20,7 +20,7 @@ Utilisateurs dans le démo :
   - nicolas.berthelette@gmail.com
   - cendrillon.legault@gmail.com
 
-Mot de passe pour tous les utilisateurs du démo : 123456
+Mot de passe pour tous les utilisateurs du démo : **123456**
 
 L'application commence par la MainActivity qui :
 - Redirige vers l'écran de connexion si aucun utilisateur n'est connecté (et l'écran de connexion peut rediriger vers l'écran de registration) 
@@ -36,6 +36,6 @@ Tous les utilisateurs peuvent modifier leurs profiles en cliquant sur le bouton 
 
 Tous les utilisateurs ont accès a une activité de statistiques qui leurs montrent des données différents selon leurs types (patients, docteurs, etc..).
 
-Démo video :
+**Démo video :**
 
 [![Démo video](http://img.youtube.com/vi/XUffhUCbcww/0.jpg)](https://youtu.be/XUffhUCbcww "Démo")
