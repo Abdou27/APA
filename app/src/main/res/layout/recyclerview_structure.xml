@@ -9,12 +9,13 @@
         android:id="@+id/materialCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:cardBackgroundColor="@color/design_default_color_secondary"
         android:clickable="true"
-        app:cardCornerRadius="10dp">
+        android:focusable="true"
+        app:cardBackgroundColor="@color/design_default_color_secondary"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,14 +24,14 @@
             android:padding="10dp">
 
             <TextView
-                android:id="@+id/titleTextView"
+                android:id="@+id/nameTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_default_color_on_secondary"
                 android:text="@string/structure_name" />
 
             <TextView
-                android:id="@+id/durationTextView"
+                android:id="@+id/disciplineTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_default_color_on_secondary"
