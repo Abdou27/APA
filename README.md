@@ -37,4 +37,5 @@ Tous les utilisateurs peuvent modifier leurs profiles en cliquant sur le bouton 
 Tous les utilisateurs ont accès a une activité de statistiques qui leurs montrent des données différents selon leurs types (patients, docteurs, etc..).
 
 Démo video :
+
 [![Démo video](http://img.youtube.com/vi/XUffhUCbcww/0.jpg)](https://youtu.be/XUffhUCbcww "Démo")
