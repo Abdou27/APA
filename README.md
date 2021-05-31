@@ -6,6 +6,7 @@ Membres du groupe :
 - Hakim BEGHAMI
 - Othmane GOUGILI
 
+
 Utilisateurs dans le démo :
 - Docteurs :
   - amabella.quinn@gmail.com
@@ -16,3 +17,5 @@ Utilisateurs dans le démo :
 - Patients :
   - nicolas.berthelette@gmail.com
   - cendrillon.legault@gmail.com
+
+Mot de passe pour tous les utilisateurs du démo : 123456
