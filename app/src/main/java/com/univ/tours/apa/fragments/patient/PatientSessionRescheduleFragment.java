@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.patient;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -7,8 +7,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -21,9 +19,7 @@ import android.widget.Toast;
 
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.activities.MainActivity;
-import com.univ.tours.apa.adapters.CollaboratorActivitiesRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Activity;
-import com.univ.tours.apa.entities.Course;
 import com.univ.tours.apa.entities.Session;
 
 import java.text.SimpleDateFormat;
@@ -37,10 +33,10 @@ import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PatientRescheduleSessionFragment#newInstance} factory method to
+ * Use the {@link PatientSessionRescheduleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PatientRescheduleSessionFragment extends DialogFragment {
+public class PatientSessionRescheduleFragment extends DialogFragment {
     private Session session;
     EditText dateEditText, timeEditText;
     Button cancelButton, saveButton;
@@ -49,7 +45,7 @@ public class PatientRescheduleSessionFragment extends DialogFragment {
     TextView noActivitiesTextView, courseTitleTextView, courseDescriptionTextView, categoryTextView, patientTextView;
     List<Activity> retainedActivities;
 
-    public PatientRescheduleSessionFragment() {
+    public PatientSessionRescheduleFragment() {
         // Required empty public constructor
     }
 
@@ -59,8 +55,8 @@ public class PatientRescheduleSessionFragment extends DialogFragment {
      *
      * @return A new instance of fragment PatientRescheduleSessionFragment.
      */
-    public static PatientRescheduleSessionFragment newInstance(Session session) {
-        PatientRescheduleSessionFragment fragment = new PatientRescheduleSessionFragment();
+    public static PatientSessionRescheduleFragment newInstance(Session session) {
+        PatientSessionRescheduleFragment fragment = new PatientSessionRescheduleFragment();
         fragment.session = session;
         return fragment;
     }

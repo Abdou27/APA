@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Course;
-import com.univ.tours.apa.fragments.CollaboratorReadCourseFragment;
+import com.univ.tours.apa.fragments.doctor.DoctorCourseEditFragment;
+import com.univ.tours.apa.fragments.doctor.DoctorPatientReadFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +23,12 @@ public class DoctorCoursesRecyclerViewAdapter extends RecyclerView.Adapter<Docto
     private Context context;
     List<Course> courses;
     FragmentManager fm;
+    DoctorPatientReadFragment parentFragement;
 
-    public DoctorCoursesRecyclerViewAdapter(Context context, List<Course> courses, FragmentManager fm) {
+    public DoctorCoursesRecyclerViewAdapter(Context context, List<Course> courses, FragmentManager fm, DoctorPatientReadFragment parentFragement) {
         this.context = context;
         this.fm = fm;
+        this.parentFragement = parentFragement;
         if (courses != null)
             this.courses = courses;
         else
@@ -48,7 +49,8 @@ public class DoctorCoursesRecyclerViewAdapter extends RecyclerView.Adapter<Docto
         holder.descriptionTextView.setText(courses.get(position).getDescription());
         holder.categoryTextView.setText(courses.get(position).getCategory());
         holder.materialCardView.setOnClickListener(v -> {
-            // Add functionality to edit courses later
+            DoctorCourseEditFragment doctorCourseEditFragment = DoctorCourseEditFragment.newInstance(courses.get(position), parentFragement);
+            doctorCourseEditFragment.show(fm, "doctorEditCourseFragment");
         });
     }
 

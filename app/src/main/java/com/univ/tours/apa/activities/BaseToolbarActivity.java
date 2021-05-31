@@ -1,18 +1,17 @@
 package com.univ.tours.apa.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.univ.tours.apa.R;
+import com.univ.tours.apa.fragments.common.ProfileFragment;
 
 public class BaseToolbarActivity extends AppCompatActivity {
-    private static final String APA = "apa";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +22,17 @@ public class BaseToolbarActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
+
+        boolean inStats = getIntent().getBooleanExtra("inStats", false);
+
+        if (inStats) {
+            menu.findItem(R.id.action_stats).setVisible(false);
+            menu.findItem(R.id.action_home).setVisible(true);
+        } else {
+            menu.findItem(R.id.action_stats).setVisible(true);
+            menu.findItem(R.id.action_home).setVisible(false);
+        }
+
         return true;
     }
 
@@ -32,14 +42,22 @@ public class BaseToolbarActivity extends AppCompatActivity {
         Intent intent;
         switch (id) {
             case R.id.action_logout :
-                getSharedPreferences(APA, Context.MODE_PRIVATE).edit().putLong("user_id", 0L).apply();
+                MainActivity.logoutCurrentUser();
                 intent = new Intent(this, LoginActivity.class);
                 startActivity(intent);
+                Toast.makeText(this, getString(R.string.logged_out), Toast.LENGTH_LONG).show();
                 finish();
                 break;
             case R.id.action_profile :
-                intent = new Intent(this, ProfileActivity.class);
+                ProfileFragment.newInstance().show(getSupportFragmentManager(), "profileFragment");
+                break;
+            case R.id.action_stats :
+                intent = new Intent(this, StatisticsActivity.class);
+                intent.putExtra("inStats", true);
                 startActivity(intent);
+                break;
+            case R.id.action_home :
+                onBackPressed();
                 break;
         }
         return super.onOptionsItemSelected(item);

@@ -24,6 +24,27 @@
             android:padding="10dp">
 
             <TextView
+                android:id="@+id/activityTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:text="@string/activity" />
+
+            <TextView
+                android:id="@+id/structureTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:text="@string/structure" />
+
+            <TextView
+                android:id="@+id/patientTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/design_default_color_on_secondary"
+                android:text="@string/patient" />
+
+            <TextView
                 android:id="@+id/dateTimeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,18 +52,11 @@
                 android:text="@string/session_date_time" />
 
             <TextView
-                android:id="@+id/durationTextView"
+                android:id="@+id/requestedDateTimeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/design_default_color_on_secondary"
-                android:text="@string/session_duration_in_minutes" />
-
-            <TextView
-                android:id="@+id/structureTextView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/design_default_color_on_secondary"
-                android:text="@string/session_structure" />
+                android:text="@string/session_rescheduled_date_time" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

@@ -2,11 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/action_home"
+        android:title="@string/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/action_stats"
+        android:title="@string/statistics"
+        android:icon="@drawable/ic_baseline_pie_chart_24"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_profile"
         android:title="@string/action_profile"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_baseline_person_24"
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/action_logout"
         android:title="@string/action_logout"
-        app:showAsAction="never"/>
+        android:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:showAsAction="ifRoom"/>
 </menu>

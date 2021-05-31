@@ -25,12 +25,18 @@ public class Converters {
 
     @TypeConverter
     public static LocalDateTime fromLocalDateTime(String value) {
-        return LocalDateTime.parse(value);
+        if (value != null)
+            return LocalDateTime.parse(value);
+        else
+            return null;
     }
 
     @TypeConverter
     public static String localDateTimeToString(LocalDateTime datetime) {
-        return datetime.toString();
+        if (datetime == null)
+            return null;
+        else
+            return datetime.toString();
     }
 
     @TypeConverter

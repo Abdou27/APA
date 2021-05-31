@@ -3,6 +3,7 @@ package com.univ.tours.apa.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +18,11 @@ import com.univ.tours.apa.entities.User;
 public class MainActivity extends AppCompatActivity {
     private static final String APA = "apa";
     public static AppDatabase db;
-    private SharedPreferences settings;
+    public static SharedPreferences settings;
+    public static ProgressDialog loadingDialog;
     FragmentManager fm;
+
+    public static Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         db = AppDatabase.getDatabase(this);
+
+        context = this;
 
         fm = getSupportFragmentManager();
 
@@ -36,39 +42,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // Check if user is logged in
-            Long user_id = settings.getLong("user_id", 0);
-            if (user_id.equals(0L)) {
-                Intent intent = new Intent(this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                new Thread((Runnable) () -> {
-                    User user = MainActivity.db.userDao().findById(user_id);
-                    if (user != null) {
-                        Looper.prepare();
-                        Toast.makeText(this, getString(R.string.logged_in_as) + " " + user.getFullName(), Toast.LENGTH_LONG).show();
-                        if (user.getRole().equals("ROLE_DOCTOR")) {
-                            Intent intent = new Intent(this, DoctorActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else if (user.getRole().equals("ROLE_COLLABORATOR")) {
-                            Intent intent = new Intent(this, CollaboratorActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Intent intent = new Intent(this, PatientActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                        Looper.loop();
+        loadingDialog = ProgressDialog.show(this, "", getString(R.string.loading_progress_bar_text), true);
+
+//        Check if user is logged in
+        Long user_id = getLoggedInUserId();
+        if (user_id.equals(0L)) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startIntentActivityAndFinishCurrentOne(intent);
+        } else {
+            new Thread(() -> {
+                User user = MainActivity.db.userDao().findById(user_id);
+                if (user != null) {
+                    Looper.prepare();
+                    Toast.makeText(this, getString(R.string.logged_in_as) + " " + user.getFullName(), Toast.LENGTH_LONG).show();
+                    if (user.getRole().equals("ROLE_DOCTOR")) {
+                        Intent intent = new Intent(this, DoctorActivity.class);
+                        startIntentActivityAndFinishCurrentOne(intent);
+                    } else if (user.getRole().equals("ROLE_COLLABORATOR")) {
+                        Intent intent = new Intent(this, CollaboratorActivity.class);
+                        startIntentActivityAndFinishCurrentOne(intent);
                     } else {
-                        getSharedPreferences(APA, Context.MODE_PRIVATE).edit().putLong("user_id", 0L).apply();
-                        Intent intent = new Intent(this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
+                        Intent intent = new Intent(this, PatientActivity.class);
+                        startIntentActivityAndFinishCurrentOne(intent);
                     }
-                }).start();
-            }
+                    Looper.loop();
+                } else {
+                    settings.edit().putLong("user_id", 0L).apply();
+                    Intent intent = new Intent(this, LoginActivity.class);
+                    startIntentActivityAndFinishCurrentOne(intent);
+                }
+            }).start();
+        }
+    }
+
+    private void startIntentActivityAndFinishCurrentOne(Intent intent) {
+        startActivity(intent);
+        loadingDialog.dismiss();
+        finish();
+    }
+
+    public static Long getLoggedInUserId() {
+        return settings.getLong("user_id", 0);
+    }
+
+    public static void logoutCurrentUser() {
+        settings.edit().putLong("user_id", 0L).apply();
     }
 }

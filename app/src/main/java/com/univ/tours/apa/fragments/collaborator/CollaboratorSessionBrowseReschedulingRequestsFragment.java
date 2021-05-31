@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -16,11 +16,8 @@ import android.widget.TextView;
 
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.activities.MainActivity;
-import com.univ.tours.apa.adapters.CollaboratorActivitiesRecyclerViewAdapter;
 import com.univ.tours.apa.adapters.CollaboratorRequestsRecyclerViewAdapter;
-import com.univ.tours.apa.adapters.CollaboratorSessionsRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Activity;
-import com.univ.tours.apa.entities.Course;
 import com.univ.tours.apa.entities.Session;
 import com.univ.tours.apa.entities.User;
 
@@ -30,10 +27,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorBrowseReschedulingRequestsFragment#newInstance} factory method to
+ * Use the {@link CollaboratorSessionBrowseReschedulingRequestsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorBrowseReschedulingRequestsFragment extends Fragment {
+public class CollaboratorSessionBrowseReschedulingRequestsFragment extends Fragment {
     FragmentManager fm;
 
     public RecyclerView mRecyclerView;
@@ -45,7 +42,7 @@ public class CollaboratorBrowseReschedulingRequestsFragment extends Fragment {
     TextView noRequestsTextView;
     public List<Session> requests = new ArrayList<>();
 
-    public CollaboratorBrowseReschedulingRequestsFragment() {
+    public CollaboratorSessionBrowseReschedulingRequestsFragment() {
         // Required empty public constructor
     }
 
@@ -56,8 +53,8 @@ public class CollaboratorBrowseReschedulingRequestsFragment extends Fragment {
      * @return A new instance of fragment CollaboratorBrowseReschedulingRequestsFragment.
      * @param fm
      */
-    public static CollaboratorBrowseReschedulingRequestsFragment newInstance(FragmentManager fm) {
-        CollaboratorBrowseReschedulingRequestsFragment fragment = new CollaboratorBrowseReschedulingRequestsFragment();
+    public static CollaboratorSessionBrowseReschedulingRequestsFragment newInstance(FragmentManager fm) {
+        CollaboratorSessionBrowseReschedulingRequestsFragment fragment = new CollaboratorSessionBrowseReschedulingRequestsFragment();
         fragment.fm = fm;
         return fragment;
     }

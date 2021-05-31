@@ -23,8 +23,14 @@ public interface CourseDao {
     @Query("SELECT * FROM course WHERE patient=:patient")
     List<Course> findByPatient(User patient);
 
+    @Query("SELECT * FROM course WHERE doctor=:doctor")
+    List<Course> findByDoctor(User doctor);
+
     @Query("SELECT * FROM course WHERE id=:id LIMIT 1")
     Course findById(Long id);
+
+    @Query("SELECT * FROM course WHERE patient=:patient AND doctor=:doctor")
+    List<Course> findByPatientForDoctor(User patient, User doctor);
 
     @Insert
     Long insert(Course course);

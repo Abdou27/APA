@@ -1,6 +1,5 @@
 package com.univ.tours.apa.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.User;
-import com.univ.tours.apa.fragments.DoctorReadPatientFragment;
+import com.univ.tours.apa.fragments.doctor.DoctorPatientReadFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,8 +44,8 @@ public class DoctorPatientsRecyclerViewAdapter extends RecyclerView.Adapter<Doct
         holder.titleTextView.setText(patients.get(position).getFullName());
         holder.durationTextView.setText(patients.get(position).getAge() + " " + context.getString(R.string.years));
         holder.materialCardView.setOnClickListener(v -> {
-            DoctorReadPatientFragment doctorReadPatientFragment = DoctorReadPatientFragment.newInstance(patients.get(position), fm, context);
-            doctorReadPatientFragment.show(fm, "doctorReadPatientFragment");
+            DoctorPatientReadFragment doctorPatientReadFragment = DoctorPatientReadFragment.newInstance(patients.get(position), fm, context);
+            doctorPatientReadFragment.show(fm, "doctorReadPatientFragment");
         });
     }
 

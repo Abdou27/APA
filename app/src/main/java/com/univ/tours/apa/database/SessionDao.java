@@ -22,6 +22,15 @@ public interface SessionDao {
     @Query("SELECT * FROM session WHERE activity IN (:activities)")
     List<Session> findByActivities(List<Activity> activities);
 
+    @Query("SELECT * FROM session WHERE activity=:activity")
+    List<Session> findByActivity(Activity activity);
+
+    @Query("SELECT * FROM session WHERE activity IN (:activities) AND rescheduledDateTime IS NOT NULL")
+    List<Session> findByActivitiesAndRescheduled(List<Activity> activities);
+
+    @Query("SELECT * FROM session WHERE activity=:activities AND rescheduledDateTime IS NOT NULL")
+    List<Session> findByActivityAndRescheduled(List<Activity> activities);
+
     @Query("SELECT * FROM session WHERE id=:id LIMIT 1")
     Session findById(Long id);
 

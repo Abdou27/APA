@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="350dp"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".fragments.CollaboratorEditActivityFragment">
+    tools:context=".fragments.collaborator.CollaboratorActivityEditFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constrainedWidth="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -23,29 +25,40 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
             android:text="@string/Edit_activity"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
         <EditText
             android:id="@+id/titleEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/activity_title"
             android:inputType="text" />
 
         <EditText
             android:id="@+id/descriptionEditText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/activity_description"
             android:gravity="start|bottom"
             android:inputType="textMultiLine"
             android:minLines="1"
             android:maxLines="5"
             android:scrollbars="vertical" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:text="@string/Sessions" />
+
+        <TextView
+            android:id="@+id/noSessionsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/no_sessions_defined" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -55,7 +68,8 @@
         android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constrainedWidth="true">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -64,6 +78,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constrainedWidth="true"
             app:layout_constraintHeight_max="300dp"
             tools:itemCount="5"
             tools:listitem="@layout/recyclerview_structure" />
@@ -73,7 +88,8 @@
         android:id="@+id/addSessionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:textColor="@color/design_default_color_primary"
         app:layout_constraintTop_toBottomOf="@id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/add_session" />
@@ -82,21 +98,10 @@
         android:id="@+id/editActivityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintTop_toBottomOf="@id/addSessionButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/edit_activity" />
-
-    <ProgressBar
-        android:id="@+id/loadingProgressBar"
-        android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@id/editActivityButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        android:text="@string/save" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

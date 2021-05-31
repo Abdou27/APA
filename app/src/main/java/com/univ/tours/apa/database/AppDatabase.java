@@ -13,8 +13,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @Database(entities = {
-        Activity.class, Course.class, Session.class, Structure.class, User.class
-}, version = 2)
+        Activity.class,
+        Course.class,
+        Session.class,
+        Structure.class,
+        User.class
+}, version = 3)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();

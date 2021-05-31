@@ -8,9 +8,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.fragments.CollaboratorBrowseCoursesFragment;
-import com.univ.tours.apa.fragments.CollaboratorBrowseStructuresFragment;
-import com.univ.tours.apa.fragments.DoctorBrowsePatientsFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorCourseBrowseFragment;
+import com.univ.tours.apa.fragments.common.StructureBrowseFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorSessionBrowseReschedulingRequestsFragment;
 
 import java.util.Locale;
 
@@ -34,9 +34,11 @@ public class CollaboratorPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         switch (position) {
             case 0:
-                return CollaboratorBrowseCoursesFragment.newInstance(fm);
+                return CollaboratorCourseBrowseFragment.newInstance(fm);
             case 1:
-                return CollaboratorBrowseStructuresFragment.newInstance(fm);
+                return StructureBrowseFragment.newInstance(fm);
+            case 2:
+                return CollaboratorSessionBrowseReschedulingRequestsFragment.newInstance(fm);
         }
         return null;
     }
@@ -50,6 +52,8 @@ public class CollaboratorPagerAdapter extends FragmentPagerAdapter {
                 return mContext.getString(R.string.Courses).toUpperCase(l);
             case 1:
                 return mContext.getString(R.string.Structures).toUpperCase(l);
+            case 2:
+                return mContext.getString(R.string.rescheduling_requests).toUpperCase(l);
         }
         return null;
     }
@@ -57,6 +61,6 @@ public class CollaboratorPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 1 total pages.
-        return 2;
+        return 3;
     }
 }

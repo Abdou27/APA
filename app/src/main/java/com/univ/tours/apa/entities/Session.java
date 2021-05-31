@@ -12,6 +12,7 @@ public class Session {
     private Long id;
     @NonNull
     private LocalDateTime dateTime;
+    private LocalDateTime rescheduledDateTime;
     @NonNull
     private Integer duration;
     private Integer completionRate;
@@ -40,6 +41,14 @@ public class Session {
 
     public void setDateTime(@NonNull LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public LocalDateTime getRescheduledDateTime() {
+        return rescheduledDateTime;
+    }
+
+    public void setRescheduledDateTime(LocalDateTime rescheduledDateTime) {
+        this.rescheduledDateTime = rescheduledDateTime;
     }
 
     @NonNull

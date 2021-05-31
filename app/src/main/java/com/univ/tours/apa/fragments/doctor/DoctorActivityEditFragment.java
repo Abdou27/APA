@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.doctor;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -17,25 +16,23 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.activities.MainActivity;
 import com.univ.tours.apa.entities.Activity;
-import com.univ.tours.apa.entities.Course;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorEditActivityFragment#newInstance} factory method to
+ * Use the {@link DoctorActivityEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorEditActivityFragment extends DialogFragment {
-    DoctorAddCourseFragment doctorAddCourseFragment;
-    DoctorEditCourseFragment doctorEditCourseFragment;
+public class DoctorActivityEditFragment extends DialogFragment {
+    DoctorCourseAddFragment doctorCourseAddFragment;
+    DoctorCourseEditFragment doctorCourseEditFragment;
     Activity activity;
 
     EditText titleEditText, descriptionEditText;
     Button deleteButton, cancelButton, saveButton;
     ProgressDialog loadingDialog;
 
-    public DoctorEditActivityFragment() {
+    public DoctorActivityEditFragment() {
         // Required empty public constructor
     }
 
@@ -45,13 +42,13 @@ public class DoctorEditActivityFragment extends DialogFragment {
      *
      * @return A new instance of fragment DoctorEditActivityFragment.
      */
-    public static DoctorEditActivityFragment newInstance(Activity activity, Fragment parentFragment) {
-        DoctorEditActivityFragment fragment = new DoctorEditActivityFragment();
+    public static DoctorActivityEditFragment newInstance(Activity activity, Fragment parentFragment) {
+        DoctorActivityEditFragment fragment = new DoctorActivityEditFragment();
         fragment.activity = activity;
-        if (parentFragment instanceof DoctorAddCourseFragment) {
-            fragment.doctorAddCourseFragment = (DoctorAddCourseFragment) parentFragment;
-        } else if (parentFragment instanceof DoctorEditCourseFragment) {
-            fragment.doctorEditCourseFragment = (DoctorEditCourseFragment) parentFragment;
+        if (parentFragment instanceof DoctorCourseAddFragment) {
+            fragment.doctorCourseAddFragment = (DoctorCourseAddFragment) parentFragment;
+        } else if (parentFragment instanceof DoctorCourseEditFragment) {
+            fragment.doctorCourseEditFragment = (DoctorCourseEditFragment) parentFragment;
         }
         return fragment;
     }
@@ -104,10 +101,10 @@ public class DoctorEditActivityFragment extends DialogFragment {
             activity.setTitle(inputTitle);
             activity.setDescription(inputDescription);
             new Thread(() -> {
-                if (doctorEditCourseFragment != null) {
-                    doctorEditCourseFragment.mRecyclerView.post(() -> doctorEditCourseFragment.mAdapter.notifyDataSetChanged());
-                } else if (doctorAddCourseFragment != null) {
-                    doctorAddCourseFragment.mRecyclerView.post(() -> doctorAddCourseFragment.mAdapter.notifyDataSetChanged());
+                if (doctorCourseEditFragment != null) {
+                    doctorCourseEditFragment.mRecyclerView.post(() -> doctorCourseEditFragment.mAdapter.notifyDataSetChanged());
+                } else if (doctorCourseAddFragment != null) {
+                    doctorCourseAddFragment.mRecyclerView.post(() -> doctorCourseAddFragment.mAdapter.notifyDataSetChanged());
                 }
                 getActivity().runOnUiThread(() -> {
                     loadingDialog.dismiss();
@@ -122,15 +119,15 @@ public class DoctorEditActivityFragment extends DialogFragment {
     private void delete() {
         loadingDialog = ProgressDialog.show(getContext(), "", getContext().getString(R.string.loading_progress_bar_text), true);
         new Thread(() -> {
-            if (doctorEditCourseFragment != null) {
-                doctorEditCourseFragment.activities.remove(activity);
-                doctorEditCourseFragment.activitiesToDelete.add(activity);
-                doctorEditCourseFragment.mRecyclerView.post(() -> doctorEditCourseFragment.mAdapter.notifyDataSetChanged());
-                getActivity().runOnUiThread(() -> doctorEditCourseFragment.refreshEmptyTextView());
-            } else if (doctorAddCourseFragment != null) {
-                doctorAddCourseFragment.activities.remove(activity);
-                doctorAddCourseFragment.mRecyclerView.post(() -> doctorAddCourseFragment.mAdapter.notifyDataSetChanged());
-                getActivity().runOnUiThread(() -> doctorAddCourseFragment.refreshEmptyTextView());
+            if (doctorCourseEditFragment != null) {
+                doctorCourseEditFragment.activities.remove(activity);
+                doctorCourseEditFragment.activitiesToDelete.add(activity);
+                doctorCourseEditFragment.mRecyclerView.post(() -> doctorCourseEditFragment.mAdapter.notifyDataSetChanged());
+                getActivity().runOnUiThread(() -> doctorCourseEditFragment.refreshEmptyTextView());
+            } else if (doctorCourseAddFragment != null) {
+                doctorCourseAddFragment.activities.remove(activity);
+                doctorCourseAddFragment.mRecyclerView.post(() -> doctorCourseAddFragment.mAdapter.notifyDataSetChanged());
+                getActivity().runOnUiThread(() -> doctorCourseAddFragment.refreshEmptyTextView());
             }
             getActivity().runOnUiThread(() -> {
                 loadingDialog.dismiss();

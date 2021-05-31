@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -24,14 +24,15 @@ import com.univ.tours.apa.entities.Course;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
 import static com.univ.tours.apa.activities.MainActivity.db;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorBrowseCoursesFragment#newInstance} factory method to
+ * Use the {@link CollaboratorCourseBrowseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorBrowseCoursesFragment extends Fragment {
+public class CollaboratorCourseBrowseFragment extends Fragment {
     FragmentManager fm;
     public List<Course> retainedCourses = new ArrayList<>();
 
@@ -44,8 +45,10 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
     String searchQuery = "";
     ProgressBar loadingProgressBar;
     private ProgressDialog loadingDialog;
+    private SearchView searchView;
+    private SearchView.OnQueryTextListener textListener;
 
-    public CollaboratorBrowseCoursesFragment() {
+    public CollaboratorCourseBrowseFragment() {
         // Required empty public constructor
     }
 
@@ -55,8 +58,8 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
      *
      * @return A new instance of fragment CollaboratorBrowseCoursesFragment.
      */
-    public static CollaboratorBrowseCoursesFragment newInstance(FragmentManager fm) {
-        CollaboratorBrowseCoursesFragment fragment = new CollaboratorBrowseCoursesFragment();
+    public static CollaboratorCourseBrowseFragment newInstance(FragmentManager fm) {
+        CollaboratorCourseBrowseFragment fragment = new CollaboratorCourseBrowseFragment();
         fragment.fm = fm;
         return fragment;
     }
@@ -75,24 +78,25 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
         noCoursesTextView = view.findViewById(R.id.noCoursesTextView);
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
 
-        SearchView searchView = view.findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView = view.findViewById(R.id.searchView);
+        textListener = new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
-                Log.d("TAG", "onQueryTextSubmit: " + searchQuery);
                 updateCourses();
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (searchQuery.equals(newText))
+                    return false;
                 searchQuery = newText;
-                Log.d("TAG", "onQueryTextChange: " + searchQuery);
                 updateCourses();
                 return false;
             }
-        });
+        };
+        searchView.setOnQueryTextListener(textListener);
         mRecyclerView = view.findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(false);
         mLayoutManager = new LinearLayoutManager(getContext());
@@ -103,6 +107,12 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // textListener.onQueryTextChange(searchQuery);
+    }
+
     private void setupCourses() {
 //        loadingDialog = ProgressDialog.show(getContext(), "", getContext().getString(R.string.loading_progress_bar_text), true);
         loadingProgressBar.setVisibility(View.VISIBLE);
@@ -111,7 +121,7 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
             List<Course> courseList = db.courseDao().getAll();
             retainedCourses.clear();
             for (Course course : courseList) {
-                List<Activity> activities = MainActivity.db.activityDao().findByCourse(course);
+                List<Activity> activities = db.activityDao().findByCourse(course);
                 boolean flag = false;
                 for (Activity activity : activities) {
                     if (activity.getCollaborator() == null || activity.getCollaborator().getId().equals(MainActivity.getLoggedInUserId())) {
@@ -119,14 +129,28 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
                         break;
                     }
                 }
-                if (flag)
-                    retainedCourses.add(course);
+                if (flag) {
+                    boolean contains = false;
+                    for (Course retainedCourse : retainedCourses) {
+                        if (retainedCourse.getId().equals(course.getId())) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (!contains) {
+                        retainedCourses.add(course);
+                    }
+                }
             }
             getActivity().runOnUiThread(() -> {
-                mAdapter = new CollaboratorCoursesRecyclerViewAdapter(getContext(), retainedCourses, fm);
-                mRecyclerView.setAdapter(mAdapter);
+                Log.d("TAG", "setupCourses: " + retainedCourses.size());
+                if (mRecyclerView.getAdapter() == null) {
+                    mAdapter = new CollaboratorCoursesRecyclerViewAdapter(getContext(), retainedCourses, fm);
+                    mRecyclerView.setAdapter(mAdapter);
+                } else {
+                    mRecyclerView.getAdapter().notifyDataSetChanged();
+                }
                 refreshEmptyTextView();
-//                loadingDialog.dismiss();
                 loadingProgressBar.setVisibility(View.GONE);
             });
         }).start();
@@ -135,15 +159,13 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
     private void updateCourses() {
         loadingProgressBar.setVisibility(View.VISIBLE);
         new Thread(() -> {
-            Log.d("TAG", "updateActivities: " + searchQuery);
             List<Course> courseList = db.courseDao().getAll();
-            Log.d("TAG", "courseList: " + courseList.size());
             retainedCourses.clear();
             for (Course course : courseList) {
                 if (isNotInQuery(course)) {
                     continue;
                 }
-                List<Activity> activities = MainActivity.db.activityDao().findByCourse(course);
+                List<Activity> activities = db.activityDao().findByCourse(course);
                 boolean flag = false;
                 for (Activity activity : activities) {
                     if (activity.getCollaborator() == null || activity.getCollaborator().getId().equals(MainActivity.getLoggedInUserId())) {
@@ -151,15 +173,25 @@ public class CollaboratorBrowseCoursesFragment extends Fragment {
                         break;
                     }
                 }
-                if (flag)
-                    retainedCourses.add(course);
+                if (flag) {
+                    boolean contains = false;
+                    for (Course retainedCourse : retainedCourses) {
+                        if (retainedCourse.getId().equals(course.getId())) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (!contains) {
+                        retainedCourses.add(course);
+                    }
+                }
             }
-//            this.mRecyclerView.post(() -> mAdapter.notifyDataSetChanged());
             getActivity().runOnUiThread(() -> {
-                mAdapter.notifyDataSetChanged();
+                Log.d("TAG", "updateCourses: " + retainedCourses.size());
+                if (mAdapter != null)
+                    mAdapter.notifyDataSetChanged();
                 refreshEmptyTextView();
                 loadingProgressBar.setVisibility(View.GONE);
-                Log.d("TAG", "retainedCourses: " + retainedCourses.size());
             });
         }).start();
     }

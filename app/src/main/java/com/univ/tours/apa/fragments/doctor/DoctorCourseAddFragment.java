@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.doctor;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -32,16 +32,16 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorAddCourseFragment#newInstance} factory method to
+ * Use the {@link DoctorCourseAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorAddCourseFragment extends DialogFragment {
+public class DoctorCourseAddFragment extends DialogFragment {
     private static final String APA = "apa";
     User patient;
     FragmentManager fm;
     Course course;
     android.app.Activity context;
-    DoctorReadPatientFragment parent;
+    DoctorPatientReadFragment parent;
 
     public RecyclerView mRecyclerView;
     public DoctorActivitiesRecyclerViewAdapter mAdapter;
@@ -54,7 +54,7 @@ public class DoctorAddCourseFragment extends DialogFragment {
     Button addActivityButton, addCourseButton;
     ProgressDialog loadingDialog;
 
-    public DoctorAddCourseFragment() {
+    public DoctorCourseAddFragment() {
         // Required empty public constructor
     }
 
@@ -64,8 +64,8 @@ public class DoctorAddCourseFragment extends DialogFragment {
      *
      * @return A new instance of fragment AddCourseFragment.
      */
-    public static DoctorAddCourseFragment newInstance(User patient, FragmentManager fm, android.app.Activity context, DoctorReadPatientFragment parent) {
-        DoctorAddCourseFragment fragment = new DoctorAddCourseFragment();
+    public static DoctorCourseAddFragment newInstance(User patient, FragmentManager fm, android.app.Activity context, DoctorPatientReadFragment parent) {
+        DoctorCourseAddFragment fragment = new DoctorCourseAddFragment();
         fragment.patient = patient;
         fragment.fm = fm;
         fragment.context = context;
@@ -100,8 +100,8 @@ public class DoctorAddCourseFragment extends DialogFragment {
         addCourseButton = view.findViewById(R.id.addCourseButton);
 
         addActivityButton.setOnClickListener(v -> {
-            DoctorAddActivityFragment doctorAddActivityFragment = DoctorAddActivityFragment.newInstance(this, course, fm);
-            doctorAddActivityFragment.show(fm, "doctorAddActivityFragment");
+            DoctorActivityAddFragment doctorActivityAddFragment = DoctorActivityAddFragment.newInstance(this, course, fm);
+            doctorActivityAddFragment.show(fm, "doctorAddActivityFragment");
         });
 
         addCourseButton.setOnClickListener(v -> {

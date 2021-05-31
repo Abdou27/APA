@@ -1,5 +1,8 @@
 package com.univ.tours.apa.adapters;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,52 +18,101 @@ import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.activities.MainActivity;
 import com.univ.tours.apa.entities.Session;
-import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.fragments.CollaboratorEditActivityFragment;
-import com.univ.tours.apa.fragments.CollaboratorEditSessionFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorSessionBrowseReschedulingRequestsFragment;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class CollaboratorSessionsRecyclerViewAdapter extends RecyclerView.Adapter<CollaboratorSessionsRecyclerViewAdapter.DataContainer> {
+public class CollaboratorRequestsRecyclerViewAdapter extends RecyclerView.Adapter<CollaboratorRequestsRecyclerViewAdapter.DataContainer> {
     List<Session> sessions;
     FragmentManager fm;
-    Fragment parent;
+    CollaboratorSessionBrowseReschedulingRequestsFragment collaboratorSessionBrowseReschedulingRequestsFragment;
+    Context context;
+    private ProgressDialog loadingDialog;
 
-    public CollaboratorSessionsRecyclerViewAdapter(FragmentManager fm, List<Session> sessions, Fragment parent) {
+    public CollaboratorRequestsRecyclerViewAdapter(Context context, List<Session> sessions, FragmentManager fm, Fragment parent) {
         this.sessions = sessions;
         this.fm = fm;
-        this.parent = parent;
+        this.collaboratorSessionBrowseReschedulingRequestsFragment = (CollaboratorSessionBrowseReschedulingRequestsFragment) parent;
+        this.context = context;
     }
 
     @NonNull
     @Override
-    public CollaboratorSessionsRecyclerViewAdapter.DataContainer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CollaboratorRequestsRecyclerViewAdapter.DataContainer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recyclerview_session, parent, false);
+                    .inflate(R.layout.recyclerview_session_request, parent, false);
         return new DataContainer(view);
     }
 
     @Override
     public void onBindViewHolder(DataContainer holder, int position) {
         Session session = sessions.get(position);
-        String date = session.getDateTime().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        String time = session.getDateTime().toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
-        String datetime = date + " " + parent.getString(R.string.at) + " " + time;
-        String duration = parent.getString(R.string.Duration) + " " + session.getDuration() + " " + parent.getString(R.string.minutes);
-        String structure = parent.getString(R.string.Structure) + " " + session.getStructure().getName();
+
+        String datetime = getDatetimeString(session.getDateTime());
         holder.dateTimeTextView.setText(datetime);
-        holder.durationTextView.setText(duration);
+
+        String requestedDatetime = getDatetimeString(session.getRescheduledDateTime());
+        holder.requestedDateTimeTextView.setText(requestedDatetime);
+
+        String activity = session.getActivity().getTitle();
+        holder.activityTextView.setText(activity);
+
+        String structure = session.getStructure().getName();
         holder.structureTextView.setText(structure);
+
+        String patient = session.getActivity().getCourse().getPatient().getFullName();
+        holder.patientTextView.setText(patient);
+
         holder.materialCardView.setOnClickListener(v -> {
             if (session.getDateTime().isBefore(LocalDateTime.now())) {
-                Toast.makeText(parent.getContext(), parent.getContext().getString(R.string.cant_modify_or_delete_past_session), Toast.LENGTH_LONG).show();
+                Toast.makeText(context, context.getString(R.string.cant_modify_or_delete_past_session), Toast.LENGTH_LONG).show();
             } else {
-                CollaboratorEditSessionFragment collaboratorEditSessionFragment = CollaboratorEditSessionFragment.newInstance(session, sessions, parent);
-                collaboratorEditSessionFragment.show(fm, "collaboratorEditSessionFragment");
+                new AlertDialog.Builder(context)
+                        .setMessage(R.string.confirm_session_rescheduling)
+                        .setPositiveButton(R.string.confirm_session_rescheduling_yes, (dialog, whichButton) -> reschedule(session))
+                        .setNegativeButton(R.string.confirm_session_rescheduling_no, (dialog, which) -> removeRequest(session)).show();
             }
         });
+    }
+
+    private void removeRequest(Session session) {
+        loadingDialog = ProgressDialog.show(context, "", context.getString(R.string.loading_progress_bar_text), true);
+        session.setRescheduledDateTime(null);
+        new Thread(() -> {
+            MainActivity.db.sessionDao().update(session);
+            collaboratorSessionBrowseReschedulingRequestsFragment.getActivity().runOnUiThread(() -> {
+                collaboratorSessionBrowseReschedulingRequestsFragment.requests.remove(session);
+                collaboratorSessionBrowseReschedulingRequestsFragment.mAdapter.notifyDataSetChanged();
+                collaboratorSessionBrowseReschedulingRequestsFragment.refreshEmptyTextView();
+                loadingDialog.dismiss();
+            });
+        }).start();
+    }
+
+    private void reschedule(Session session) {
+        loadingDialog = ProgressDialog.show(context, "", context.getString(R.string.loading_progress_bar_text), true);
+        session.setDateTime(session.getRescheduledDateTime());
+        session.setRescheduledDateTime(null);
+        new Thread(() -> {
+            MainActivity.db.sessionDao().update(session);
+            collaboratorSessionBrowseReschedulingRequestsFragment.getActivity().runOnUiThread(() -> {
+                collaboratorSessionBrowseReschedulingRequestsFragment.requests.remove(session);
+                collaboratorSessionBrowseReschedulingRequestsFragment.mAdapter.notifyDataSetChanged();
+                collaboratorSessionBrowseReschedulingRequestsFragment.refreshEmptyTextView();
+                loadingDialog.dismiss();
+            });
+        }).start();
+    }
+
+    @NotNull
+    private String getDatetimeString(LocalDateTime dateTime) {
+        String date = dateTime.toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String time = dateTime.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm"));
+        return date + " " + context.getString(R.string.at) + " " + time;
     }
 
     @Override
@@ -70,14 +122,16 @@ public class CollaboratorSessionsRecyclerViewAdapter extends RecyclerView.Adapte
 
     public static class DataContainer extends RecyclerView.ViewHolder {
         MaterialCardView materialCardView;
-        TextView dateTimeTextView, durationTextView, structureTextView;
+        TextView activityTextView, structureTextView, patientTextView, dateTimeTextView, requestedDateTimeTextView;
 
         public DataContainer(View itemView) {
             super(itemView);
             materialCardView = itemView.findViewById(R.id.materialCardView);
-            dateTimeTextView = itemView.findViewById(R.id.dateTimeTextView);
-            durationTextView = itemView.findViewById(R.id.durationTextView);
+            activityTextView = itemView.findViewById(R.id.activityTextView);
             structureTextView = itemView.findViewById(R.id.structureTextView);
+            patientTextView = itemView.findViewById(R.id.patientTextView);
+            dateTimeTextView = itemView.findViewById(R.id.dateTimeTextView);
+            requestedDateTimeTextView = itemView.findViewById(R.id.requestedDateTimeTextView);
         }
     }
 }

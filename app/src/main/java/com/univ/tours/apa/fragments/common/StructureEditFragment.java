@@ -1,8 +1,7 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.common;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -22,18 +21,18 @@ import com.univ.tours.apa.entities.Structure;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditStructureFragment#newInstance} factory method to
+ * Use the {@link StructureEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditStructureFragment extends DialogFragment {
+public class StructureEditFragment extends DialogFragment {
     Structure structure;
-    BrowseStructuresFragment browseStructuresFragment;
+    StructureBrowseFragment structureBrowseFragment;
 
     EditText structureNameEditText, structureDisciplineEditText, structurePathologiesEditText;
     Button deleteButton, cancelButton, saveButton;
     ProgressDialog loadingDialog;
 
-    public EditStructureFragment() {
+    public StructureEditFragment() {
         // Required empty public constructor
     }
 
@@ -43,10 +42,10 @@ public class EditStructureFragment extends DialogFragment {
      *
      * @return A new instance of fragment EditStructureFragment.
      */
-    public static EditStructureFragment newInstance(Structure structure, BrowseStructuresFragment browseStructuresFragment) {
-        EditStructureFragment fragment = new EditStructureFragment();
+    public static StructureEditFragment newInstance(Structure structure, StructureBrowseFragment structureBrowseFragment) {
+        StructureEditFragment fragment = new StructureEditFragment();
         fragment.structure = structure;
-        fragment.browseStructuresFragment = browseStructuresFragment;
+        fragment.structureBrowseFragment = structureBrowseFragment;
         return fragment;
     }
 
@@ -116,7 +115,7 @@ public class EditStructureFragment extends DialogFragment {
             structure.setPathologyList(inputPathologies);
             new Thread(() -> {
                 MainActivity.db.structureDao().update(structure);
-                browseStructuresFragment.mRecyclerView.post(() -> browseStructuresFragment.mAdapter.notifyDataSetChanged());
+                structureBrowseFragment.mRecyclerView.post(() -> structureBrowseFragment.mAdapter.notifyDataSetChanged());
                 getActivity().runOnUiThread(() -> {
                     loadingDialog.dismiss();
                     dismiss();
@@ -132,7 +131,7 @@ public class EditStructureFragment extends DialogFragment {
         new Thread(() -> {
             MainActivity.db.structureDao().delete(structure);
             getActivity().runOnUiThread(() -> {
-                browseStructuresFragment.updateStructures();
+                structureBrowseFragment.updateStructures();
                 loadingDialog.dismiss();
                 dismiss();
             });

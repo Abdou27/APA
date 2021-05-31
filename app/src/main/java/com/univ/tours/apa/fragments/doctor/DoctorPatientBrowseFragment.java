@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.adapters.DoctorPatientsRecyclerViewAdapter;
@@ -25,10 +26,10 @@ import static com.univ.tours.apa.activities.MainActivity.*;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorPatientsBrowseFragment#newInstance} factory method to
+ * Use the {@link DoctorPatientBrowseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorPatientsBrowseFragment extends Fragment {
+public class DoctorPatientBrowseFragment extends Fragment {
     FragmentManager fm;
     android.app.Activity context;
     List<User> retainedUserList;
@@ -39,9 +40,11 @@ public class DoctorPatientsBrowseFragment extends Fragment {
     private ProgressDialog loadingDialog;
     ProgressBar loadingProgressBar;
 
+    TextView noPatientsTextView;
+
     String searchQuery = "";
 
-    public DoctorPatientsBrowseFragment() {
+    public DoctorPatientBrowseFragment() {
         // Required empty public constructor
     }
 
@@ -51,8 +54,8 @@ public class DoctorPatientsBrowseFragment extends Fragment {
      *
      * @return A new instance of fragment DoctorBrowsePatientsFragment.
      */
-    public static DoctorPatientsBrowseFragment newInstance(FragmentManager fm, android.app.Activity context) {
-        DoctorPatientsBrowseFragment fragment = new DoctorPatientsBrowseFragment();
+    public static DoctorPatientBrowseFragment newInstance(FragmentManager fm, android.app.Activity context) {
+        DoctorPatientBrowseFragment fragment = new DoctorPatientBrowseFragment();
         fragment.fm = fm;
         fragment.context = context;
         return fragment;
@@ -68,6 +71,7 @@ public class DoctorPatientsBrowseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_doctor_browse_patients, container, false);
+        noPatientsTextView = view.findViewById(R.id.noPatientsTextView);
         SearchView searchView = view.findViewById(R.id.searchView);
         loadingProgressBar = view.findViewById(R.id.loadingProgressBar);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -105,6 +109,7 @@ public class DoctorPatientsBrowseFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 mAdapter = new DoctorPatientsRecyclerViewAdapter(context, retainedUserList, fm);
                 mRecyclerView.setAdapter(mAdapter);
+                refreshEmptyTextView();
     //            loadingDialog.dismiss();
                 loadingProgressBar.setVisibility(View.GONE);
             });
@@ -124,6 +129,7 @@ public class DoctorPatientsBrowseFragment extends Fragment {
                     }
                 }
                 mAdapter.notifyDataSetChanged();
+                refreshEmptyTextView();
 //                this.mRecyclerView.post(() -> mAdapter.notifyDataSetChanged());
     //            loadingDialog.dismiss();
                 loadingProgressBar.setVisibility(View.GONE);
@@ -137,5 +143,13 @@ public class DoctorPatientsBrowseFragment extends Fragment {
         boolean ab = !a.contains(b);
         boolean ba = !b.contains(a);
         return ab && ba;
+    }
+
+    public void refreshEmptyTextView() {
+        if (retainedUserList.isEmpty()) {
+            noPatientsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noPatientsTextView.setVisibility(View.GONE);
+        }
     }
 }

@@ -27,10 +27,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorReadPatientFragment#newInstance} factory method to
+ * Use the {@link DoctorPatientReadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorReadPatientFragment extends DialogFragment {
+public class DoctorPatientReadFragment extends DialogFragment {
     private static final String APA = "apa";
     FragmentManager fm;
     android.app.Activity context;
@@ -43,7 +43,7 @@ public class DoctorReadPatientFragment extends DialogFragment {
     public DoctorCoursesRecyclerViewAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public DoctorReadPatientFragment() {
+    public DoctorPatientReadFragment() {
         // Required empty public constructor
     }
 
@@ -53,8 +53,8 @@ public class DoctorReadPatientFragment extends DialogFragment {
      *
      * @return A new instance of fragment DoctorReadPatientFragment.
      */
-    public static DoctorReadPatientFragment newInstance(User patient, FragmentManager fm, android.app.Activity context) {
-        DoctorReadPatientFragment fragment = new DoctorReadPatientFragment();
+    public static DoctorPatientReadFragment newInstance(User patient, FragmentManager fm, android.app.Activity context) {
+        DoctorPatientReadFragment fragment = new DoctorPatientReadFragment();
         fragment.patient = patient;
         fragment.context = context;
         fragment.fm = fm;

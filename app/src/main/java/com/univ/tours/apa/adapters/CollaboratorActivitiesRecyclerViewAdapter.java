@@ -13,9 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Activity;
-import com.univ.tours.apa.entities.Course;
-import com.univ.tours.apa.fragments.CollaboratorEditActivityFragment;
-import com.univ.tours.apa.fragments.CollaboratorReadCourseFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorActivityEditFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorCourseReadFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +22,12 @@ import java.util.List;
 public class CollaboratorActivitiesRecyclerViewAdapter extends RecyclerView.Adapter<CollaboratorActivitiesRecyclerViewAdapter.DataContainer> {
     private Context context;
     public List<Activity> activities;
-    public CollaboratorReadCourseFragment parent;
+    public CollaboratorCourseReadFragment parent;
     FragmentManager fm;
 
-    public CollaboratorActivitiesRecyclerViewAdapter(Context context, List<Activity> activities, FragmentManager fm, CollaboratorReadCourseFragment collaboratorReadCourseFragment) {
+    public CollaboratorActivitiesRecyclerViewAdapter(Context context, List<Activity> activities, FragmentManager fm, CollaboratorCourseReadFragment collaboratorCourseReadFragment) {
         this.context = context;
-        this.parent = collaboratorReadCourseFragment;
+        this.parent = collaboratorCourseReadFragment;
         this.fm = fm;
         if (activities != null)
             this.activities = activities;
@@ -46,11 +45,16 @@ public class CollaboratorActivitiesRecyclerViewAdapter extends RecyclerView.Adap
 
     @Override
     public void onBindViewHolder(DataContainer holder, int position) {
-        holder.titleTextView.setText(activities.get(position).getTitle());
-        holder.descriptionTextView.setText(activities.get(position).getDescription());
+        Activity activity = activities.get(position);
+        String title = activity.getTitle();
+        if (activity.getCollaborator() == null) {
+            title = title + " " + context.getString(R.string.free_activity);
+        }
+        holder.titleTextView.setText(title);
+        holder.descriptionTextView.setText(activity.getDescription());
         holder.materialCardView.setOnClickListener(v -> {
-            CollaboratorEditActivityFragment collaboratorEditActivityFragment = CollaboratorEditActivityFragment.newInstance(activities.get(position), fm, this);
-            collaboratorEditActivityFragment.show(fm, "collaboratorEditActivityFragment");
+            CollaboratorActivityEditFragment collaboratorActivityEditFragment = CollaboratorActivityEditFragment.newInstance(activity, fm, this);
+            collaboratorActivityEditFragment.show(fm, "collaboratorEditActivityFragment");
         });
     }
 
@@ -65,8 +69,8 @@ public class CollaboratorActivitiesRecyclerViewAdapter extends RecyclerView.Adap
 
         public DataContainer(View itemView) {
             super(itemView);
-            titleTextView = (TextView) itemView.findViewById(R.id.titleTextView);
-            descriptionTextView = (TextView) itemView.findViewById(R.id.descriptionTextView);
+            titleTextView = itemView.findViewById(R.id.titleTextView);
+            descriptionTextView = itemView.findViewById(R.id.descriptionTextView);
             materialCardView = itemView.findViewById(R.id.materialCardView);
         }
     }

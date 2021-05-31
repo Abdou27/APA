@@ -6,25 +6,23 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.fragments.BrowseStructuresFragment;
-import com.univ.tours.apa.fragments.CollaboratorReadCourseFragment;
-import com.univ.tours.apa.fragments.EditStructureFragment;
+import com.univ.tours.apa.fragments.common.StructureBrowseFragment;
+import com.univ.tours.apa.fragments.common.StructureEditFragment;
 
 import java.util.List;
 
 public class BrowseStructuresRecyclerViewAdapter extends RecyclerView.Adapter<BrowseStructuresRecyclerViewAdapter.DataContainer> {
     public List<Structure> structures;
     FragmentManager fm;
-    BrowseStructuresFragment fragment;
+    StructureBrowseFragment fragment;
 
-    public BrowseStructuresRecyclerViewAdapter(FragmentManager fm, List<Structure> structures, BrowseStructuresFragment fragment) {
+    public BrowseStructuresRecyclerViewAdapter(FragmentManager fm, List<Structure> structures, StructureBrowseFragment fragment) {
         this.structures = structures;
         this.fragment = fragment;
         this.fm = fm;
@@ -43,8 +41,8 @@ public class BrowseStructuresRecyclerViewAdapter extends RecyclerView.Adapter<Br
         holder.nameTextView.setText(structures.get(position).getName());
         holder.disciplineTextView.setText(structures.get(position).getDiscipline());
         holder.materialCardView.setOnClickListener(v -> {
-            EditStructureFragment editStructureFragment = EditStructureFragment.newInstance(structures.get(position), fragment);
-            editStructureFragment.show(fm, "editStructureFragment");
+            StructureEditFragment structureEditFragment = StructureEditFragment.newInstance(structures.get(position), fragment);
+            structureEditFragment.show(fm, "editStructureFragment");
         });
     }
 

@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.common;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -17,11 +17,11 @@ import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.adapters.BrowseStructuresRecyclerViewAdapter;
 import com.univ.tours.apa.adapters.StructurePickerStructuresRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Structure;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorSessionAddFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorSessionEditFragment;
 
 import java.util.List;
 
@@ -29,14 +29,14 @@ import static com.univ.tours.apa.activities.MainActivity.db;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StructurePickerFragment#newInstance} factory method to
+ * Use the {@link StructurePickFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StructurePickerFragment extends DialogFragment {
+public class StructurePickFragment extends DialogFragment {
     EditText parent;
     FragmentManager fm;
-    public CollaboratorAddSessionFragment collaboratorAddSessionFragment;
-    public CollaboratorEditSessionFragment collaboratorEditSessionFragment;
+    public CollaboratorSessionAddFragment collaboratorSessionAddFragment;
+    public CollaboratorSessionEditFragment collaboratorSessionEditFragment;
 
     public RecyclerView mRecyclerView;
     private StructurePickerStructuresRecyclerViewAdapter mAdapter;
@@ -48,7 +48,7 @@ public class StructurePickerFragment extends DialogFragment {
     private SearchView searchView;
     private ProgressDialog loadingDialog;
 
-    public StructurePickerFragment() {
+    public StructurePickFragment() {
         // Required empty public constructor
     }
 
@@ -58,13 +58,13 @@ public class StructurePickerFragment extends DialogFragment {
      *
      * @return A new instance of fragment StructurePickerFragment.
      */
-    public static StructurePickerFragment newInstance(EditText parent, FragmentManager fm, Fragment parentFragment) {
-        StructurePickerFragment fragment = new StructurePickerFragment();
+    public static StructurePickFragment newInstance(EditText parent, FragmentManager fm, Fragment parentFragment) {
+        StructurePickFragment fragment = new StructurePickFragment();
         fragment.parent = parent;
-        if (parentFragment instanceof CollaboratorAddSessionFragment)
-            fragment.collaboratorAddSessionFragment = (CollaboratorAddSessionFragment) parentFragment;
-        else if (parentFragment instanceof CollaboratorEditSessionFragment)
-            fragment.collaboratorEditSessionFragment = (CollaboratorEditSessionFragment) parentFragment;
+        if (parentFragment instanceof CollaboratorSessionAddFragment)
+            fragment.collaboratorSessionAddFragment = (CollaboratorSessionAddFragment) parentFragment;
+        else if (parentFragment instanceof CollaboratorSessionEditFragment)
+            fragment.collaboratorSessionEditFragment = (CollaboratorSessionEditFragment) parentFragment;
         fragment.fm = fm;
         return fragment;
     }

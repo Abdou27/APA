@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".fragments.DoctorBrowsePatientsFragment">
+    tools:context=".fragments.doctor.DoctorPatientBrowseFragment">
 
     <SearchView
         android:id="@+id/searchView"
@@ -24,6 +24,15 @@
         app:layout_constraintStart_toStartOf="@id/recyclerView"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/noPatientsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        android:text="@string/no_patients_found" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -33,5 +42,16 @@
         app:layout_constraintTop_toBottomOf="@id/searchView"
         tools:itemCount="5"
         tools:listitem="@layout/recyclerview_doctor_patient" />
+
+    <ProgressBar
+        android:id="@+id/loadingProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
+        android:indeterminateTint="@color/design_default_color_primary"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

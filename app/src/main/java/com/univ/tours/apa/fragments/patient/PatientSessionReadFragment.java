@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.patient;
 
 import android.os.Bundle;
 
@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Activity;
@@ -21,17 +20,17 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link PatientReadSessionFragment#newInstance} factory method to
+ * Use the {@link PatientSessionReadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PatientReadSessionFragment extends DialogFragment {
+public class PatientSessionReadFragment extends DialogFragment {
 
     private Session session;
 
     TextView activityTitleTextView, dateTimeDescriptionTextView, durationTextView, structureTextView, collaboratorTextView;
     Button rescheduleButton, feedbackButton;
 
-    public PatientReadSessionFragment() {
+    public PatientSessionReadFragment() {
         // Required empty public constructor
     }
 
@@ -41,8 +40,8 @@ public class PatientReadSessionFragment extends DialogFragment {
      *
      * @return A new instance of fragment ReadSessionFragment.
      */
-    public static PatientReadSessionFragment newInstance(Session session) {
-        PatientReadSessionFragment fragment = new PatientReadSessionFragment();
+    public static PatientSessionReadFragment newInstance(Session session) {
+        PatientSessionReadFragment fragment = new PatientSessionReadFragment();
         fragment.session = session;
         return fragment;
     }
@@ -92,8 +91,8 @@ public class PatientReadSessionFragment extends DialogFragment {
     }
 
     private void rescheduleSession() {
-        PatientRescheduleSessionFragment patientRescheduleSessionFragment = PatientRescheduleSessionFragment.newInstance(session);
-        patientRescheduleSessionFragment.show(getFragmentManager(), "patientRescheduleSessionFragment");
+        PatientSessionRescheduleFragment patientSessionRescheduleFragment = PatientSessionRescheduleFragment.newInstance(session);
+        patientSessionRescheduleFragment.show(getFragmentManager(), "patientRescheduleSessionFragment");
     }
 
     public void setupTextViews() {

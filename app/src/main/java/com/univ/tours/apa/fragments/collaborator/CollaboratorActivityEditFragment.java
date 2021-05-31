@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -31,10 +31,10 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorEditActivityFragment#newInstance} factory method to
+ * Use the {@link CollaboratorActivityEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorEditActivityFragment extends DialogFragment {
+public class CollaboratorActivityEditFragment extends DialogFragment {
     FragmentManager fm;
     CollaboratorActivitiesRecyclerViewAdapter parent;
     Activity activity;
@@ -51,7 +51,7 @@ public class CollaboratorEditActivityFragment extends DialogFragment {
     Button addSessionButton, editActivityButton;
     private ProgressDialog loadingDialog;
 
-    public CollaboratorEditActivityFragment() {
+    public CollaboratorActivityEditFragment() {
         // Required empty public constructor
     }
 
@@ -61,8 +61,8 @@ public class CollaboratorEditActivityFragment extends DialogFragment {
      *
      * @return A new instance of fragment CollaboratorEditActivityFragment.
      */
-    public static CollaboratorEditActivityFragment newInstance(Activity activity, FragmentManager fm, CollaboratorActivitiesRecyclerViewAdapter collaboratorActivitiesRecyclerViewAdapter) {
-        CollaboratorEditActivityFragment fragment = new CollaboratorEditActivityFragment();
+    public static CollaboratorActivityEditFragment newInstance(Activity activity, FragmentManager fm, CollaboratorActivitiesRecyclerViewAdapter collaboratorActivitiesRecyclerViewAdapter) {
+        CollaboratorActivityEditFragment fragment = new CollaboratorActivityEditFragment();
         fragment.activity = activity;
         fragment.parent = collaboratorActivitiesRecyclerViewAdapter;
         fragment.fm = fm;
@@ -94,8 +94,8 @@ public class CollaboratorEditActivityFragment extends DialogFragment {
         titleEditText.setText(activity.getTitle());
         descriptionEditText.setText(activity.getDescription());
         addSessionButton.setOnClickListener(v -> {
-            CollaboratorAddSessionFragment collaboratorAddSessionFragment = CollaboratorAddSessionFragment.newInstance(this, activity, fm);
-            collaboratorAddSessionFragment.show(fm, "collaboratorAddSessionFragment");
+            CollaboratorSessionAddFragment collaboratorSessionAddFragment = CollaboratorSessionAddFragment.newInstance(this, activity, fm);
+            collaboratorSessionAddFragment.show(fm, "collaboratorAddSessionFragment");
         });
 
         setupSessions();

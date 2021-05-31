@@ -1,10 +1,13 @@
 package com.univ.tours.apa.entities;
 
+import android.app.ProgressDialog;
+
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
+import com.univ.tours.apa.R;
 import com.univ.tours.apa.activities.MainActivity;
 import com.univ.tours.apa.database.AppDatabase;
 
@@ -121,12 +124,14 @@ public class User {
     }
 
     public List<Session> getSessions() {
+        ProgressDialog loadingDialog = ProgressDialog.show(MainActivity.context, "", MainActivity.context.getString(R.string.loading_progress_bar_text), true);
         AtomicReference<List<Session>> sessions = new AtomicReference<>();
-        new Thread((Runnable) () -> {
+        new Thread(() -> {
             AppDatabase db = MainActivity.db;
             List<Course> courses = db.courseDao().findByPatient(this);
             List<Activity> activities = db.activityDao().findByCourses(courses);
             sessions.set(db.sessionDao().findByActivities(activities));
+            loadingDialog.dismiss();
         }).start();
         return sessions.get();
     }

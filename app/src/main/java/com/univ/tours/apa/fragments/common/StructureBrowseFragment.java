@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.common;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -27,10 +27,10 @@ import static com.univ.tours.apa.activities.MainActivity.db;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link BrowseStructuresFragment#newInstance} factory method to
+ * Use the {@link StructureBrowseFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BrowseStructuresFragment extends Fragment {
+public class StructureBrowseFragment extends Fragment {
     FragmentManager fm;
     List<Structure> retainedStructures;
 
@@ -46,7 +46,7 @@ public class BrowseStructuresFragment extends Fragment {
     ProgressBar loadingProgressBar;
     private ProgressDialog loadingDialog;
 
-    public BrowseStructuresFragment() {
+    public StructureBrowseFragment() {
         // Required empty public constructor
     }
 
@@ -56,8 +56,8 @@ public class BrowseStructuresFragment extends Fragment {
      *
      * @return A new instance of fragment CollaboratorBrowseStructuresFragment.
      */
-    public static BrowseStructuresFragment newInstance(FragmentManager fm) {
-        BrowseStructuresFragment fragment = new BrowseStructuresFragment();
+    public static StructureBrowseFragment newInstance(FragmentManager fm) {
+        StructureBrowseFragment fragment = new StructureBrowseFragment();
         fragment.fm = fm;
         return fragment;
     }
@@ -102,8 +102,8 @@ public class BrowseStructuresFragment extends Fragment {
         });
 
         floatingActionButton.setOnClickListener(v -> {
-            AddStructureFragment addStructureFragment = AddStructureFragment.newInstance(this, fm);
-            addStructureFragment.show(fm, "collaboratorAddStructureFragment");
+            StructureAddFragment structureAddFragment = StructureAddFragment.newInstance(this, fm);
+            structureAddFragment.show(fm, "collaboratorAddStructureFragment");
         });
 
         setupStructures();

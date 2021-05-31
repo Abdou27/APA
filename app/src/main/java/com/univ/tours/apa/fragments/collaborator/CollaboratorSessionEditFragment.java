@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -18,9 +18,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.adapters.CollaboratorSessionsRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Session;
 import com.univ.tours.apa.entities.Structure;
+import com.univ.tours.apa.fragments.common.StructurePickFragment;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -33,21 +33,21 @@ import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorEditSessionFragment#newInstance} factory method to
+ * Use the {@link CollaboratorSessionEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorEditSessionFragment extends DialogFragment {
+public class CollaboratorSessionEditFragment extends DialogFragment {
 
     private Session session;
     private List<Session> sessions;
-    private CollaboratorEditActivityFragment collaboratorEditActivityFragment;
+    private CollaboratorActivityEditFragment collaboratorActivityEditFragment;
     public Structure structure;
 
     EditText dateEditText, timeEditText, durationEditText, structureEditText;
     Button deleteButton, cancelButton, saveButton;
     ProgressDialog loadingDialog;
 
-    public CollaboratorEditSessionFragment() {
+    public CollaboratorSessionEditFragment() {
         // Required empty public constructor
     }
 
@@ -57,12 +57,12 @@ public class CollaboratorEditSessionFragment extends DialogFragment {
      *
      * @return A new instance of fragment CollaboratorEditSessionFragment.
      */
-    public static CollaboratorEditSessionFragment newInstance(Session session, List<Session> sessions, Fragment parentFragment) {
-        CollaboratorEditSessionFragment fragment = new CollaboratorEditSessionFragment();
+    public static CollaboratorSessionEditFragment newInstance(Session session, List<Session> sessions, Fragment parentFragment) {
+        CollaboratorSessionEditFragment fragment = new CollaboratorSessionEditFragment();
         fragment.session = session;
         fragment.sessions = sessions;
-        if (parentFragment instanceof CollaboratorEditActivityFragment)
-            fragment.collaboratorEditActivityFragment = (CollaboratorEditActivityFragment) parentFragment;
+        if (parentFragment instanceof CollaboratorActivityEditFragment)
+            fragment.collaboratorActivityEditFragment = (CollaboratorActivityEditFragment) parentFragment;
         return fragment;
     }
 
@@ -117,8 +117,8 @@ public class CollaboratorEditSessionFragment extends DialogFragment {
         });
 
         structureEditText.setOnClickListener(v -> {
-            StructurePickerFragment structurePickerFragment = StructurePickerFragment.newInstance(structureEditText, getFragmentManager(), this);
-            structurePickerFragment.show(getFragmentManager(), "structurePickerFragment");
+            StructurePickFragment structurePickFragment = StructurePickFragment.newInstance(structureEditText, getFragmentManager(), this);
+            structurePickFragment.show(getFragmentManager(), "structurePickerFragment");
         });
 
         cancelButton.setOnClickListener(v -> dismiss());
@@ -197,7 +197,7 @@ public class CollaboratorEditSessionFragment extends DialogFragment {
                 session.setDateTime(finalLocalDateTime);
                 session.setDuration(finalDuration);
                 session.setStructure(structure);
-                collaboratorEditActivityFragment.mRecyclerView.post(() -> collaboratorEditActivityFragment.mAdapter.notifyDataSetChanged());
+                collaboratorActivityEditFragment.mRecyclerView.post(() -> collaboratorActivityEditFragment.mAdapter.notifyDataSetChanged());
                 getActivity().runOnUiThread(() -> {
                     loadingDialog.dismiss();
                     dismiss();
@@ -218,11 +218,11 @@ public class CollaboratorEditSessionFragment extends DialogFragment {
 
         if (valid) {
             new Thread(() -> {
-                if (collaboratorEditActivityFragment != null) {
-                    collaboratorEditActivityFragment.sessions.remove(session);
-                    collaboratorEditActivityFragment.sessionsToDelete.add(session);
-                    collaboratorEditActivityFragment.mRecyclerView.post(() -> collaboratorEditActivityFragment.mAdapter.notifyDataSetChanged());
-                    getActivity().runOnUiThread(() -> collaboratorEditActivityFragment.refreshEmptyTextView());
+                if (collaboratorActivityEditFragment != null) {
+                    collaboratorActivityEditFragment.sessions.remove(session);
+                    collaboratorActivityEditFragment.sessionsToDelete.add(session);
+                    collaboratorActivityEditFragment.mRecyclerView.post(() -> collaboratorActivityEditFragment.mAdapter.notifyDataSetChanged());
+                    getActivity().runOnUiThread(() -> collaboratorActivityEditFragment.refreshEmptyTextView());
                 }
                 getActivity().runOnUiThread(() -> {
                     loadingDialog.dismiss();

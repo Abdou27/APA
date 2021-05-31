@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Course;
-import com.univ.tours.apa.entities.User;
-import com.univ.tours.apa.fragments.CollaboratorReadCourseFragment;
-import com.univ.tours.apa.fragments.DoctorReadPatientFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorCourseReadFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,8 +47,8 @@ public class CollaboratorCoursesRecyclerViewAdapter extends RecyclerView.Adapter
         holder.categoryTextView.setText(courses.get(position).getCategory());
         holder.patientTextView.setText(courses.get(position).getPatient().toString());
         holder.materialCardView.setOnClickListener(v -> {
-            CollaboratorReadCourseFragment collaboratorReadCourseFragment = CollaboratorReadCourseFragment.newInstance(courses.get(position), fm);
-            collaboratorReadCourseFragment.show(fm, "collaboratorReadCourseFragment");
+            CollaboratorCourseReadFragment collaboratorCourseReadFragment = CollaboratorCourseReadFragment.newInstance(courses.get(position), fm);
+            collaboratorCourseReadFragment.show(fm, "collaboratorReadCourseFragment");
         });
     }
 

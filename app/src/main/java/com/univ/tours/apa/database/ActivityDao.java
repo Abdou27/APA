@@ -25,6 +25,18 @@ public interface ActivityDao {
     @Query("SELECT * FROM activity WHERE course IN (:courses)")
     List<Activity> findByCourses(List<Course> courses);
 
+    @Query("SELECT * FROM activity WHERE course=:course")
+    List<Activity> findByCourse(Course course);
+
+    @Query("SELECT * FROM activity WHERE collaborator=:collaborator")
+    List<Activity> findByCollaborator(User collaborator);
+
+    @Query("SELECT * FROM activity WHERE course=:course AND collaborator IS NULL")
+    List<Activity> findByCourseAndNoCollaborator(Course course);
+
+    @Query("DELETE FROM activity WHERE course IN (:courses)")
+    void deleteByCourses(List<Course> courses);
+
     @Query("SELECT * FROM activity WHERE id=:id LIMIT 1")
     Activity findById(Long id);
 

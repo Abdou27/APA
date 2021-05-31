@@ -10,7 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.APA">
-        <activity android:name=".activities.ProfileActivity"></activity>
+        <activity android:name=".activities.StatisticsActivity"></activity>
         <activity android:name=".activities.CollaboratorActivity" />
         <activity android:name=".activities.DoctorActivity" />
         <activity android:name=".activities.BaseToolbarActivity" />

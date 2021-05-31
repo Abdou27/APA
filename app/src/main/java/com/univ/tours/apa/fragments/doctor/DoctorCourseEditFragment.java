@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.doctor;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -30,13 +30,13 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link DoctorEditCourseFragment#newInstance} factory method to
+ * Use the {@link DoctorCourseEditFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DoctorEditCourseFragment extends DialogFragment {
+public class DoctorCourseEditFragment extends DialogFragment {
     Course course;
     List<Activity> activities, activitiesToDelete;
-    DoctorReadPatientFragment doctorReadPatientFragment;
+    DoctorPatientReadFragment doctorPatientReadFragment;
 
     public RecyclerView mRecyclerView;
     public DoctorActivitiesRecyclerViewAdapter mAdapter;
@@ -47,7 +47,7 @@ public class DoctorEditCourseFragment extends DialogFragment {
     Button addActivityButton, deleteButton, cancelButton, saveButton;
     ProgressDialog loadingDialog;
 
-    public DoctorEditCourseFragment() {
+    public DoctorCourseEditFragment() {
         // Required empty public constructor
     }
 
@@ -57,10 +57,10 @@ public class DoctorEditCourseFragment extends DialogFragment {
      *
      * @return A new instance of fragment DoctorEditCourseFragment.
      */
-    public static DoctorEditCourseFragment newInstance(Course course, DoctorReadPatientFragment doctorReadPatientFragment) {
-        DoctorEditCourseFragment fragment = new DoctorEditCourseFragment();
+    public static DoctorCourseEditFragment newInstance(Course course, DoctorPatientReadFragment doctorPatientReadFragment) {
+        DoctorCourseEditFragment fragment = new DoctorCourseEditFragment();
         fragment.course = course;
-        fragment.doctorReadPatientFragment = doctorReadPatientFragment;
+        fragment.doctorPatientReadFragment = doctorPatientReadFragment;
         fragment.activitiesToDelete = new ArrayList<>();
         return fragment;
     }
@@ -91,8 +91,8 @@ public class DoctorEditCourseFragment extends DialogFragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         addActivityButton.setOnClickListener(v -> {
-            DoctorAddActivityFragment doctorAddActivityFragment = DoctorAddActivityFragment.newInstance(this, course, getFragmentManager());
-            doctorAddActivityFragment.show(getFragmentManager(), "doctorAddActivityFragment");
+            DoctorActivityAddFragment doctorActivityAddFragment = DoctorActivityAddFragment.newInstance(this, course, getFragmentManager());
+            doctorActivityAddFragment.show(getFragmentManager(), "doctorAddActivityFragment");
         });
 
         cancelButton.setOnClickListener(v -> {
@@ -174,7 +174,7 @@ public class DoctorEditCourseFragment extends DialogFragment {
                     }
                 }
                 activitiesToDelete.clear();
-                doctorReadPatientFragment.mRecyclerView.post(() -> doctorReadPatientFragment.mAdapter.notifyDataSetChanged());
+                doctorPatientReadFragment.mRecyclerView.post(() -> doctorPatientReadFragment.mAdapter.notifyDataSetChanged());
                 getActivity().runOnUiThread(() -> {
                     loadingDialog.dismiss();
                     dismiss();
@@ -192,10 +192,10 @@ public class DoctorEditCourseFragment extends DialogFragment {
             courses.add(course);
             MainActivity.db.activityDao().deleteByCourses(courses);
             MainActivity.db.courseDao().delete(course);
-            doctorReadPatientFragment.courses.remove(course);
-            doctorReadPatientFragment.mRecyclerView.post(() -> doctorReadPatientFragment.mAdapter.notifyDataSetChanged());
+            doctorPatientReadFragment.courses.remove(course);
+            doctorPatientReadFragment.mRecyclerView.post(() -> doctorPatientReadFragment.mAdapter.notifyDataSetChanged());
             getActivity().runOnUiThread(() -> {
-                doctorReadPatientFragment.refreshEmptyTextView();
+                doctorPatientReadFragment.refreshEmptyTextView();
                 loadingDialog.dismiss();
                 dismiss();
             });

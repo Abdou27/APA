@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,11 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.activities.MainActivity;
 import com.univ.tours.apa.entities.Session;
-import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.fragments.CollaboratorEditActivityFragment;
+import com.univ.tours.apa.fragments.collaborator.CollaboratorSessionEditFragment;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -51,9 +51,12 @@ public class CollaboratorSessionsRecyclerViewAdapter extends RecyclerView.Adapte
         holder.durationTextView.setText(duration);
         holder.structureTextView.setText(structure);
         holder.materialCardView.setOnClickListener(v -> {
-            // Allow the ability to edit structures later
-//            parent.setText(structures.get(position).getName());
-//            fragment.dismiss();
+            if (session.getDateTime().isBefore(LocalDateTime.now())) {
+                Toast.makeText(parent.getContext(), parent.getContext().getString(R.string.cant_modify_or_delete_past_session), Toast.LENGTH_LONG).show();
+            } else {
+                CollaboratorSessionEditFragment collaboratorSessionEditFragment = CollaboratorSessionEditFragment.newInstance(session, sessions, parent);
+                collaboratorSessionEditFragment.show(fm, "collaboratorEditSessionFragment");
+            }
         });
     }
 
@@ -68,10 +71,10 @@ public class CollaboratorSessionsRecyclerViewAdapter extends RecyclerView.Adapte
 
         public DataContainer(View itemView) {
             super(itemView);
-            materialCardView = (MaterialCardView) itemView.findViewById(R.id.materialCardView);
-            dateTimeTextView = (TextView) itemView.findViewById(R.id.dateTimeTextView);
-            durationTextView = (TextView) itemView.findViewById(R.id.durationTextView);
-            structureTextView = (TextView) itemView.findViewById(R.id.structureTextView);
+            materialCardView = itemView.findViewById(R.id.materialCardView);
+            dateTimeTextView = itemView.findViewById(R.id.dateTimeTextView);
+            durationTextView = itemView.findViewById(R.id.durationTextView);
+            structureTextView = itemView.findViewById(R.id.structureTextView);
         }
     }
 }

@@ -1,14 +1,13 @@
 package com.univ.tours.apa.adapters;
 
-import android.content.Context;
-
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.fragments.DoctorBrowsePatientsFragment;
+import com.univ.tours.apa.fragments.common.StructureBrowseFragment;
+import com.univ.tours.apa.fragments.doctor.DoctorPatientBrowseFragment;
 
 import java.util.Locale;
 
@@ -32,7 +31,9 @@ public class DoctorPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         switch (position) {
             case 0:
-                return DoctorBrowsePatientsFragment.newInstance(fm, mContext);
+                return DoctorPatientBrowseFragment.newInstance(fm, mContext);
+            case 1:
+                return StructureBrowseFragment.newInstance(fm);
         }
         return null;
     }
@@ -44,6 +45,8 @@ public class DoctorPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return mContext.getString(R.string.Patients).toUpperCase(l);
+            case 1:
+                return mContext.getString(R.string.Structures).toUpperCase(l);
         }
         return null;
     }
@@ -51,6 +54,6 @@ public class DoctorPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 1 total pages.
-        return 1;
+        return 2;
     }
 }

@@ -1,6 +1,5 @@
 package com.univ.tours.apa.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.fragments.CollaboratorAddSessionFragment;
-import com.univ.tours.apa.fragments.StructurePickerFragment;
+import com.univ.tours.apa.fragments.common.StructurePickFragment;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class StructurePickerStructuresRecyclerViewAdapter extends RecyclerView.Adapter<StructurePickerStructuresRecyclerViewAdapter.DataContainer> {
     List<Structure> structures;
-    StructurePickerFragment fragment;
+    StructurePickFragment fragment;
     EditText parent;
 
-    public StructurePickerStructuresRecyclerViewAdapter(StructurePickerFragment fragment, EditText parent, List<Structure> structures) {
+    public StructurePickerStructuresRecyclerViewAdapter(StructurePickFragment fragment, EditText parent, List<Structure> structures) {
         this.structures = structures;
         this.fragment = fragment;
         this.parent = parent;
@@ -41,11 +37,15 @@ public class StructurePickerStructuresRecyclerViewAdapter extends RecyclerView.A
 
     @Override
     public void onBindViewHolder(DataContainer holder, int position) {
-        holder.nameTextView.setText(structures.get(position).getName());
-        holder.disciplineTextView.setText(structures.get(position).getDiscipline());
+        Structure structure = structures.get(position);
+        holder.nameTextView.setText(structure.getName());
+        holder.disciplineTextView.setText(structure.getDiscipline());
         holder.materialCardView.setOnClickListener(v -> {
-            parent.setText(structures.get(position).getName());
-            fragment.collaboratorAddSessionFragment.structure = structures.get(position);
+            parent.setText(structure.getName());
+            if (fragment.collaboratorSessionAddFragment != null)
+                fragment.collaboratorSessionAddFragment.structure = structure;
+            else if (fragment.collaboratorSessionEditFragment != null)
+                fragment.collaboratorSessionEditFragment.structure = structure;
             fragment.dismiss();
         });
     }
@@ -61,9 +61,9 @@ public class StructurePickerStructuresRecyclerViewAdapter extends RecyclerView.A
 
         public DataContainer(View itemView) {
             super(itemView);
-            materialCardView = (MaterialCardView) itemView.findViewById(R.id.materialCardView);
-            nameTextView = (TextView) itemView.findViewById(R.id.nameTextView);
-            disciplineTextView = (TextView) itemView.findViewById(R.id.disciplineTextView);
+            materialCardView = itemView.findViewById(R.id.materialCardView);
+            nameTextView = itemView.findViewById(R.id.nameTextView);
+            disciplineTextView = itemView.findViewById(R.id.disciplineTextView);
         }
     }
 }

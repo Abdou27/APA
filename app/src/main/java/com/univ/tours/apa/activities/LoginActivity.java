@@ -2,6 +2,7 @@ package com.univ.tours.apa.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.univ.tours.apa.R;
@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText usernameEditText, passwordEditText;
     Button login, register;
-    ProgressBar loading;
+    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         login = findViewById(R.id.login);
         register = findViewById(R.id.register);
-        loading = findViewById(R.id.loading);
 
         TextWatcher textWatcher = new TextWatcher() {
             @Override
@@ -61,28 +60,37 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         login.setOnClickListener(v -> {
-            loading.setVisibility(View.VISIBLE);
-            String email = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-            new Thread((Runnable) () -> {
-                User user = MainActivity.db.userDao().findByEmail(email.toLowerCase());
-                boolean valid = false;
-                if (user != null) {
-                    if (user.getPassword().equals(password)) {
-                        valid = true;
-                    }
-                }
-                Looper.prepare();
-                if (valid) {
-                    getSharedPreferences(APA, Context.MODE_PRIVATE).edit().putLong("user_id", user.getId()).apply();
-                    Intent intent = new Intent(v.getContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_LONG).show();
-                }
-                Looper.loop();
-            }).start();
+            tryToLoginUser();
         });
+    }
+
+    private void tryToLoginUser() {
+        loadingDialog = ProgressDialog.show(this, "",
+                getString(R.string.loading_progress_bar_text), true);
+
+        String email = usernameEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+
+        new Thread((Runnable) () -> {
+            User user = MainActivity.db.userDao().findByEmail(email.toLowerCase());
+            boolean valid = false;
+            if (user != null) {
+                if (user.getPassword().equals(password)) {
+                    valid = true;
+                }
+            }
+            Looper.prepare();
+            if (valid) {
+                getSharedPreferences(APA, Context.MODE_PRIVATE).edit().putLong("user_id", user.getId()).apply();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                loadingDialog.dismiss();
+                finish();
+            } else {
+                loadingDialog.dismiss();
+                Toast.makeText(this, getString(R.string.invalid_credentials), Toast.LENGTH_LONG).show();
+            }
+            Looper.loop();
+        }).start();
     }
 }

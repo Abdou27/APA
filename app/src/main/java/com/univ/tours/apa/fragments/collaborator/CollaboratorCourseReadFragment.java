@@ -1,8 +1,6 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -11,36 +9,26 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.activities.CollaboratorActivity;
-import com.univ.tours.apa.activities.DoctorActivity;
-import com.univ.tours.apa.activities.LoginActivity;
 import com.univ.tours.apa.activities.MainActivity;
-import com.univ.tours.apa.activities.PatientActivity;
 import com.univ.tours.apa.adapters.CollaboratorActivitiesRecyclerViewAdapter;
-import com.univ.tours.apa.adapters.CollaboratorCoursesRecyclerViewAdapter;
-import com.univ.tours.apa.adapters.DoctorActivitiesRecyclerViewAdapter;
 import com.univ.tours.apa.entities.Activity;
 import com.univ.tours.apa.entities.Course;
-import com.univ.tours.apa.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorReadCourseFragment#newInstance} factory method to
+ * Use the {@link CollaboratorCourseReadFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorReadCourseFragment extends DialogFragment {
+public class CollaboratorCourseReadFragment extends DialogFragment {
     FragmentManager fm;
     Course course;
 
@@ -52,7 +40,7 @@ public class CollaboratorReadCourseFragment extends DialogFragment {
     TextView noActivitiesTextView, courseTitleTextView, courseDescriptionTextView, categoryTextView, patientTextView;
     List<Activity> retainedActivities;
 
-    public CollaboratorReadCourseFragment() {
+    public CollaboratorCourseReadFragment() {
         // Required empty public constructor
     }
 
@@ -62,8 +50,8 @@ public class CollaboratorReadCourseFragment extends DialogFragment {
      *
      * @return A new instance of fragment collaboratorReadCourseFragment.
      */
-    public static CollaboratorReadCourseFragment newInstance(Course course, FragmentManager fm) {
-        CollaboratorReadCourseFragment fragment = new CollaboratorReadCourseFragment();
+    public static CollaboratorCourseReadFragment newInstance(Course course, FragmentManager fm) {
+        CollaboratorCourseReadFragment fragment = new CollaboratorCourseReadFragment();
         fragment.course = course;
         fragment.fm = fm;
         return fragment;

@@ -1,4 +1,4 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.common;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -7,9 +7,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +21,17 @@ import com.univ.tours.apa.entities.Structure;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AddStructureFragment#newInstance} factory method to
+ * Use the {@link StructureAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddStructureFragment extends DialogFragment {
+public class StructureAddFragment extends DialogFragment {
     FragmentManager fm;
-    BrowseStructuresFragment parent;
+    StructureBrowseFragment parent;
 
     EditText structureNameEditText, structureDisciplineEditText, structurePathologiesEditText;
     Button addStructureButton;
 
-    public AddStructureFragment() {
+    public StructureAddFragment() {
         // Required empty public constructor
     }
 
@@ -43,12 +41,12 @@ public class AddStructureFragment extends DialogFragment {
      *
      *
      * @return A new instance of fragment CollaboratorAddStructureFragment.
-     * @param browseStructuresFragment
+     * @param structureBrowseFragment
      * @param fm
      */
-    public static AddStructureFragment newInstance(BrowseStructuresFragment browseStructuresFragment, FragmentManager fm) {
-        AddStructureFragment fragment = new AddStructureFragment();
-        fragment.parent = browseStructuresFragment;
+    public static StructureAddFragment newInstance(StructureBrowseFragment structureBrowseFragment, FragmentManager fm) {
+        StructureAddFragment fragment = new StructureAddFragment();
+        fragment.parent = structureBrowseFragment;
         fragment.fm = fm;
         return fragment;
     }

@@ -1,19 +1,15 @@
-package com.univ.tours.apa.fragments;
+package com.univ.tours.apa.fragments.collaborator;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +18,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.univ.tours.apa.R;
-import com.univ.tours.apa.activities.MainActivity;
 import com.univ.tours.apa.entities.Activity;
-import com.univ.tours.apa.entities.Course;
 import com.univ.tours.apa.entities.Session;
 import com.univ.tours.apa.entities.Structure;
-import com.univ.tours.apa.entities.User;
+import com.univ.tours.apa.fragments.common.StructurePickFragment;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -35,16 +29,15 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link CollaboratorAddSessionFragment#newInstance} factory method to
+ * Use the {@link CollaboratorSessionAddFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CollaboratorAddSessionFragment extends DialogFragment {
-    CollaboratorEditActivityFragment parentFragment;
+public class CollaboratorSessionAddFragment extends DialogFragment {
+    CollaboratorActivityEditFragment parentFragment;
     FragmentManager fm;
     Activity activity;
     Session session = new Session();
@@ -53,7 +46,7 @@ public class CollaboratorAddSessionFragment extends DialogFragment {
     EditText dateEditText, timeEditText, durationEditText, structureEditText;
     Button addSessionButton;
 
-    public CollaboratorAddSessionFragment() {
+    public CollaboratorSessionAddFragment() {
         // Required empty public constructor
     }
 
@@ -63,9 +56,9 @@ public class CollaboratorAddSessionFragment extends DialogFragment {
      *
      * @return A new instance of fragment CollaboratorAddSessionFragment.
      */
-    public static CollaboratorAddSessionFragment newInstance(CollaboratorEditActivityFragment collaboratorEditActivityFragment, Activity activity, FragmentManager fm) {
-        CollaboratorAddSessionFragment fragment = new CollaboratorAddSessionFragment();
-        fragment.parentFragment = collaboratorEditActivityFragment;
+    public static CollaboratorSessionAddFragment newInstance(CollaboratorActivityEditFragment collaboratorActivityEditFragment, Activity activity, FragmentManager fm) {
+        CollaboratorSessionAddFragment fragment = new CollaboratorSessionAddFragment();
+        fragment.parentFragment = collaboratorActivityEditFragment;
         fragment.activity = activity;
         fragment.fm = fm;
         return fragment;
@@ -120,8 +113,8 @@ public class CollaboratorAddSessionFragment extends DialogFragment {
         });
 
         structureEditText.setOnClickListener(v -> {
-            StructurePickerFragment structurePickerFragment = StructurePickerFragment.newInstance(structureEditText, fm, this);
-            structurePickerFragment.show(fm, "structurePickerFragment");
+            StructurePickFragment structurePickFragment = StructurePickFragment.newInstance(structureEditText, fm, this);
+            structurePickFragment.show(fm, "structurePickerFragment");
         });
 
         addSessionButton.setOnClickListener(v -> {

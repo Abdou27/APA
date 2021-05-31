@@ -3,6 +3,7 @@ package com.univ.tours.apa.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
@@ -29,7 +30,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText lastNameEditText, firstNameEditText, usernameEditText, passwordEditText, passwordConfirmEditText, birthdayEditText, phoneNumberEditText;
     RadioButton patientRadioButton, doctorRadioButton, collaboratorRadioButton;
     Button login, register;
-    ProgressBar loading;
+
+    private ProgressDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +50,6 @@ public class RegisterActivity extends AppCompatActivity {
         collaboratorRadioButton = findViewById(R.id.collaboratorRadioButton);
         login = findViewById(R.id.login);
         register = findViewById(R.id.register);
-        loading = findViewById(R.id.loading);
 
         final Calendar myCalendar = Calendar.getInstance();
         DatePickerDialog.OnDateSetListener date = (view1, year, month, dayOfMonth) -> {
@@ -104,82 +105,96 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         register.setOnClickListener(v -> {
-            loading.setVisibility(View.VISIBLE);
-            String email = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
-            String confirmation = passwordConfirmEditText.getText().toString();
-            String lastName = lastNameEditText.getText().toString().trim();
-            String firstName = firstNameEditText.getText().toString().trim();
-            String birthday = birthdayEditText.getText().toString();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate birthdayLocalDate = LocalDate.parse(birthday, formatter);
-            String phoneNumber = phoneNumberEditText.getText().toString();
-            String role = null;
-            if (doctorRadioButton.isChecked()) {
-                role = "ROLE_DOCTOR";
-            } else if (collaboratorRadioButton.isChecked()) {
-                role = "ROLE_COLLABORATOR";
-            } else {
-                role = "ROLE_PATIENT";
-            }
-            if (isEmailValid(email)) {
-                if (password.matches("^.{6,}$")) {
-                    if (password.equals(confirmation)) {
-                        if (lastName.matches("^[a-zA-Z-']{2,}([ ]?[a-zA-Z-'])*$") && firstName.matches("^[a-zA-Z-']{2,}([ ]?[a-zA-Z-'])*$")) {
-                            if (phoneNumber.matches("^((0033)|(\\+33)|0)[0-9]{9}$")) {
-                                if (birthdayLocalDate.isBefore(birthdayLocalDate.minusYears(18))) {
-                                    String finalRole = role;
-                                    new Thread((Runnable) () -> {
-                                        User userByEmail = MainActivity.db.userDao().findByEmail(email.toLowerCase());
-                                        if (userByEmail == null) {
-                                            User user = new User();
-                                            user.setEmail(email.toLowerCase());
-                                            user.setPassword(password); // Pas de hashage du mot de passe pour le moment
-                                            user.setFirstName(firstName);
-                                            user.setLastName(lastName);
-                                            user.setRole(finalRole);
-                                            user.setBirthday(birthdayLocalDate);
-                                            user.setPhoneNumber(phoneNumber);
-                                            MainActivity.db.userDao().insert(user);
-                                            runOnUiThread(() -> {
-                                                Toast.makeText(this, getString(R.string.success), Toast.LENGTH_LONG).show();
-                                                Intent intent = new Intent(this, LoginActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                                loading.setVisibility(View.INVISIBLE);
-                                            });
-                                        } else {
-                                            Looper.prepare();
-                                            Toast.makeText(this, getString(R.string.user_exists), Toast.LENGTH_LONG).show();
-                                            Looper.loop();
-                                            loading.setVisibility(View.INVISIBLE);
-                                        }
-                                    }).start();
-                                } else {
-                                    Toast.makeText(this, getString(R.string.invalid_age), Toast.LENGTH_LONG).show();
-                                    loading.setVisibility(View.INVISIBLE);
-                                }
-                            } else {
-                                Toast.makeText(this, getString(R.string.invalid_phone_number), Toast.LENGTH_LONG).show();
-                                loading.setVisibility(View.INVISIBLE);
-                            }
-                        } else {
-                            Toast.makeText(this, getString(R.string.invalid_name), Toast.LENGTH_LONG).show();
-                            loading.setVisibility(View.INVISIBLE);
-                        }
-                    } else {
-                        Toast.makeText(this, getString(R.string.passwords_dont_match), Toast.LENGTH_LONG).show();
-                        loading.setVisibility(View.INVISIBLE);
-                    }
-                } else {
-                    Toast.makeText(this, getString(R.string.password_must_be_6_characters_or_more), Toast.LENGTH_LONG).show();
-                    loading.setVisibility(View.INVISIBLE);
-                }
-            } else {
-                Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
-                loading.setVisibility(View.INVISIBLE);
-            }
+            registerUser();
         });
+    }
+
+    private void registerUser() {
+        loadingDialog = ProgressDialog.show(this, "", getString(R.string.loading_progress_bar_text), true);
+
+        String email = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString();
+        String confirmation = passwordConfirmEditText.getText().toString();
+        String lastName = lastNameEditText.getText().toString().trim();
+        String firstName = firstNameEditText.getText().toString().trim();
+        String birthday = birthdayEditText.getText().toString();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate birthdayLocalDate = LocalDate.parse(birthday, formatter);
+        String phoneNumber = phoneNumberEditText.getText().toString();
+        String role = null;
+        if (doctorRadioButton.isChecked()) {
+            role = "ROLE_DOCTOR";
+        } else if (collaboratorRadioButton.isChecked()) {
+            role = "ROLE_COLLABORATOR";
+        } else {
+            role = "ROLE_PATIENT";
+        }
+
+        boolean valid = true;
+
+        if (!isEmailValid(email)) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_LONG).show();
+        }
+
+        if (!password.matches("^.{6,}$")) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.password_must_be_6_characters_or_more), Toast.LENGTH_LONG).show();
+        }
+
+        if (!password.equals(confirmation)) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.passwords_dont_match), Toast.LENGTH_LONG).show();
+        }
+
+        if (!lastName.matches("^[a-zA-Z-']{2,}([ ]?[a-zA-Z-'])*$") || !firstName.matches("^[a-zA-Z-']{2,}([ ]?[a-zA-Z-'])*$")) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.invalid_name), Toast.LENGTH_LONG).show();
+        }
+
+        if (!phoneNumber.matches("^((0033)|(\\+33)|0)[0-9]{9}$")) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.invalid_phone_number), Toast.LENGTH_LONG).show();
+        }
+
+        if (!birthdayLocalDate.isBefore(LocalDate.now().minusYears(18))) {
+            valid = false;
+            Toast.makeText(this, getString(R.string.invalid_age), Toast.LENGTH_LONG).show();
+        }
+
+        if (valid) {
+            String finalRole = role;
+            new Thread(() -> {
+                boolean emailExists = false;
+                User userByEmail = MainActivity.db.userDao().findByEmail(email.toLowerCase());
+                if (userByEmail != null) {
+                    emailExists = true;
+                    Looper.prepare();
+                    Toast.makeText(this, getString(R.string.user_exists), Toast.LENGTH_LONG).show();
+                    Looper.loop();
+                }
+                if (!emailExists) {
+                    User user = new User();
+                    user.setEmail(email.toLowerCase());
+                    user.setPassword(password); // Pas de hashage du mot de passe pour le moment
+                    user.setFirstName(firstName);
+                    user.setLastName(lastName);
+                    user.setRole(finalRole);
+                    user.setBirthday(birthdayLocalDate);
+                    user.setPhoneNumber(phoneNumber);
+                    MainActivity.db.userDao().insert(user);
+                    runOnUiThread(() -> {
+                        Toast.makeText(this, getString(R.string.success), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(this, LoginActivity.class);
+                        startActivity(intent);
+                        loadingDialog.dismiss();
+                        finish();
+                    });
+                }
+            }).start();
+        }
+
+        loadingDialog.dismiss();
     }
 
     boolean isEmailValid(CharSequence email) {

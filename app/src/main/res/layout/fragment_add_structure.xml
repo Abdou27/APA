@@ -9,7 +9,7 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".fragments.CollaboratorAddStructureFragment">
+    tools:context=".fragments.common.StructureAddFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -63,7 +63,6 @@
         app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
-        android:enabled="false"
         android:text="@string/add_structure" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

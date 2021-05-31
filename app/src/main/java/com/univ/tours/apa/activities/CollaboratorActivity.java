@@ -22,12 +22,12 @@ public class CollaboratorActivity extends BaseToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collaborator);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+            setSupportActionBar(myToolbar);
 
-        fm = getSupportFragmentManager();
-        collaboratorPagerAdapter = new CollaboratorPagerAdapter(this, fm);
-        viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(collaboratorPagerAdapter);
+            fm = getSupportFragmentManager();
+            collaboratorPagerAdapter = new CollaboratorPagerAdapter(this, fm);
+            viewPager = findViewById(R.id.view_pager);
+            viewPager.setAdapter(collaboratorPagerAdapter);
     }
 }

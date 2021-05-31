@@ -3,102 +3,101 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minWidth="350dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".fragments.CollaboratorReadCourseFragment">
+    tools:context=".fragments.collaborator.CollaboratorCourseReadFragment">
 
-    <TableLayout
-        android:id="@+id/tableLayout"
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="vertical">
 
-        <TableRow
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:text="@string/course_details" />
 
-            <TextView
-                android:id="@+id/courseTitleTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_title_title" />
-
-            <TextView
-                android:id="@+id/courseTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fragment_horizontal_margin"
-                android:layout_marginLeft="@dimen/fragment_horizontal_margin"
-                android:text="@string/course_title" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/courseTitleTitleTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="@string/course_title_title" />
 
-            <TextView
-                android:id="@+id/courseDescriptionTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_description_title" />
-
-            <TextView
-                android:id="@+id/courseDescriptionTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fragment_horizontal_margin"
-                android:layout_marginLeft="@dimen/fragment_horizontal_margin"
-                android:text="@string/course_description" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/courseTitleTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:text="@string/course_title" />
 
-            <TextView
-                android:id="@+id/categoryTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/course_category_title" />
-
-            <TextView
-                android:id="@+id/categoryTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fragment_horizontal_margin"
-                android:layout_marginLeft="@dimen/fragment_horizontal_margin"
-                android:text="@string/course_category" />
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/courseDescriptionTitleTextView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="@string/course_description_title" />
 
-            <TextView
-                android:id="@+id/patientTitleTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/patient_title" />
+        <TextView
+            android:id="@+id/courseDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_description" />
 
-            <TextView
-                android:id="@+id/patientTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/fragment_horizontal_margin"
-                android:layout_marginLeft="@dimen/fragment_horizontal_margin"
-                android:text="@string/patient" />
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:id="@+id/categoryTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="@string/course_category_title" />
+
+        <TextView
+            android:id="@+id/categoryTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_category" />
+
+        <TextView
+            android:id="@+id/patientTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:text="@string/patient_title" />
+
+        <TextView
+            android:id="@+id/patientTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/patient" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:text="@string/activities" />
+
+        <TextView
+            android:id="@+id/noActivitiesTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:text="@string/no_activities_defined" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/tableLayout"
+        app:layout_constraintTop_toBottomOf="@id/linearLayout"
         app:layout_constraintStart_toStartOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
