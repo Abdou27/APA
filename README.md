@@ -19,7 +19,7 @@ Utilisateurs dans le démo :
 - Patients :
   - nicolas.berthelette@gmail.com
   - cendrillon.legault@gmail.com
-  - 
+
 Mot de passe pour tous les utilisateurs du démo : 123456
 
 L'application commence par la MainActivity qui :
