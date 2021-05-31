@@ -159,4 +159,19 @@
     <string name="rescheduling_requests">Reprogrammation des requêtes</string>
     <string name="time_cant_be_before_8am">La session ne peut pas commencer avant 08:00</string>
     <string name="session_cant_go_past_6pm">La session ne peut pas finir après 18:00</string>
+    <string name="Feedback">Retour sur la session :</string>
+    <string name="Completion_rate">Taux d\'achèvement</string>
+    <string name="submit_feedback">Envoyer le retour</string>
+    <string name="feedback_submitted">Retour envoyé</string>
+    <string name="statistics">Statistiques</string>
+    <string name="empty_age">L\'age ne peut pas être vide</string>
+    <string name="home">Accueil</string>
+    <string name="your_courses">Vos parcours</string>
+    <string name="other_courses">Autres parcours</string>
+    <string name="no_patients_found">Aucune patient trouvé</string>
+    <string name="Activities">Activités</string>
+    <string name="your_activities">Vos activités</string>
+    <string name="other_activities">Autres activitiés</string>
+    <string name="completed">Complété</string>
+    <string name="not_completed">Non complété</string>
 </resources>
