@@ -8,6 +8,7 @@ Membres du groupe :
 
 
 Pour la première execution, s'il n'existe pas d'utilisateurs, une méthode helper va remplir la BDD avec des données arbitraires pour pouvoir comprendre le flux de l'application plus facilement.
+
 Utilisateurs dans le démo :
 - Docteurs :
   - amabella.quinn@gmail.com
@@ -18,6 +19,7 @@ Utilisateurs dans le démo :
 - Patients :
   - nicolas.berthelette@gmail.com
   - cendrillon.legault@gmail.com
+  - 
 Mot de passe pour tous les utilisateurs du démo : 123456
 
 L'application commence par la MainActivity qui :
