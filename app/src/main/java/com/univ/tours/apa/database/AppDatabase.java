@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
         Session.class,
         Structure.class,
         User.class
-}, version = 3)
+}, version = 7)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();

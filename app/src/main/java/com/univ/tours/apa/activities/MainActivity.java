@@ -3,6 +3,7 @@ package com.univ.tours.apa.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +14,11 @@ import android.widget.Toast;
 
 import com.univ.tours.apa.R;
 import com.univ.tours.apa.database.AppDatabase;
+import com.univ.tours.apa.demo.DatabaseSeeder;
 import com.univ.tours.apa.entities.User;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static final String APA = "apa";
@@ -22,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static ProgressDialog loadingDialog;
     FragmentManager fm;
 
-    public static Context context;
+    public static Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         fm = getSupportFragmentManager();
 
         settings = getSharedPreferences(APA, Context.MODE_PRIVATE);
+
+        // To setup up the database for the demo
+        DatabaseSeeder.setupDatabaseForDemo();
     }
 
     @Override
