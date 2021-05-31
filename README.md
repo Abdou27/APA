@@ -35,3 +35,5 @@ Le patient dispose d'une vue du calendrier qui lui permet de voir les sessions q
 Tous les utilisateurs peuvent modifier leurs profiles en cliquant sur le bouton dans toolbar.
 
 Tous les utilisateurs ont accès a une activité de statistiques qui leurs montrent des données différents selon leurs types (patients, docteurs, etc..).
+
+[![Démo video](http://img.youtube.com/vi/XUffhUCbcww/0.jpg)](https://youtu.be/XUffhUCbcww "Démo")
